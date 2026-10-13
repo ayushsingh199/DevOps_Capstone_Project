@@ -1,0 +1,19 @@
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = [".venv"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "N", "S", "C4", "RUF"]
+ignore = ["B008"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101", "S105", "E402"]
+"alembic/*" = ["E501"]
+
+[tool.coverage.run]
+source = ["app"]
+omit = ["app/seed.py"]
+
+[tool.ruff.lint.isort]
+known-third-party = ["alembic"]
