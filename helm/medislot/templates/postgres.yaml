@@ -95,7 +95,11 @@ spec:
         - name: tmp
           emptyDir: {}
   volumeClaimTemplates:
-    - metadata:
+    # apiVersion/kind are spelled out because the API server adds them; otherwise Argo CD
+    # reports the StatefulSet as permanently OutOfSync.
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
         name: data
       spec:
         accessModes: ["ReadWriteOnce"]
