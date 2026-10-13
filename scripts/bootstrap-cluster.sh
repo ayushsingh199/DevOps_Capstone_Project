@@ -17,6 +17,10 @@ need kubectl
 need helm
 need openssl
 
+# Helm 4's default "watcher" wait can hang on CRD-heavy charts; "legacy" waits on workloads only.
+# Helm 3 only understands a boolean --wait.
+if [[ "$(helm version --template '{{.Version}}')" == v4* ]]; then WAIT="--wait=legacy"; else WAIT="--wait"; fi
+
 case "$TARGET" in
   eks)   APP_VALUES="$ROOT/helm/medislot/values-eks.yaml" ;;
   local) APP_VALUES="$ROOT/helm/medislot/values-dev.yaml" ;;
@@ -55,12 +59,12 @@ fi
 
 log "Ingress controller (Traefik)"
 helm upgrade --install traefik traefik/traefik -n traefik --create-namespace \
-  -f "$ROOT/k8s/traefik-values.yaml" --wait --timeout 10m
+  -f "$ROOT/k8s/traefik-values.yaml" $WAIT --timeout 10m
 
 log "Monitoring (Prometheus + Grafana)"
 helm upgrade --install monitoring prometheus-community/kube-prometheus-stack -n monitoring \
   -f "$ROOT/monitoring/prometheus-values.yaml" -f "$ROOT/monitoring/grafana-values.yaml" \
-  --wait --timeout 15m
+  $WAIT --timeout 15m
 
 log "MediSlot application (Helm)"
 if [[ "$TARGET" == "local" ]]; then
@@ -70,12 +74,12 @@ else
   EXTRA=()
 fi
 helm upgrade --install medislot "$ROOT/helm/medislot" -n "$NS" \
-  -f "$APP_VALUES" ${EXTRA[@]+"${EXTRA[@]}"} --wait --timeout 10m
+  -f "$APP_VALUES" ${EXTRA[@]+"${EXTRA[@]}"} $WAIT --timeout 10m
 
 if [[ "$TARGET" == "eks" ]]; then
   log "Argo CD (GitOps) — takes over the medislot release from here on"
   helm upgrade --install argocd argo/argo-cd -n argocd --create-namespace \
-    -f "$ROOT/argocd/argocd-values.yaml" --wait --timeout 10m
+    -f "$ROOT/argocd/argocd-values.yaml" $WAIT --timeout 10m
   kubectl apply -f "$ROOT/argocd/application.yaml"
 fi
 
