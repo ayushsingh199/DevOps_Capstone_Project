@@ -1,0 +1,19 @@
+# Scenario 1 — ImagePullBackOff: the tag does not exist in GHCR.
+# Diagnose: kubectl -n medislot-lab describe pod -l app=lab-api  (Events: "manifest unknown")
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lab-api
+  namespace: medislot-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: lab-api }
+  template:
+    metadata:
+      labels: { app: lab-api }
+    spec:
+      containers:
+        - name: api
+          image: ghcr.io/ayushsingh199/medislot-backend:v9.9.9-does-not-exist
+          ports: [{ containerPort: 8000 }]

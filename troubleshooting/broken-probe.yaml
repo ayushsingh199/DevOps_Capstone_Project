@@ -1,0 +1,22 @@
+# Scenario 3 — Pod Running but never Ready: readiness probe hits a path that returns 404.
+# Diagnose: kubectl -n medislot-lab describe pod -l app=lab-probe  ("Readiness probe failed: HTTP probe failed with statuscode: 404")
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lab-probe
+  namespace: medislot-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: lab-probe }
+  template:
+    metadata:
+      labels: { app: lab-probe }
+    spec:
+      containers:
+        - name: web
+          image: nginxinc/nginx-unprivileged:1.29-alpine
+          ports: [{ containerPort: 8080 }]
+          readinessProbe:
+            httpGet: { path: /ready-typo, port: 8080 } # <-- bug: should be /
+            periodSeconds: 5
