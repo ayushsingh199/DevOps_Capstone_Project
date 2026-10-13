@@ -1,0 +1,12 @@
+{{- if .Values.grafanaDashboard.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "medislot.fullname" . }}-dashboard
+  labels:
+    {{- include "medislot.labels" . | nindent 4 }}
+    {{- toYaml .Values.grafanaDashboard.labels | nindent 4 }}
+data:
+  medislot-overview.json: |-
+    {{- .Files.Get "dashboards/medislot-overview.json" | nindent 4 }}
+{{- end }}

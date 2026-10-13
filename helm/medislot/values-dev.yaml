@@ -1,0 +1,26 @@
+# Local cluster (Colima k3s / kind / minikube) using images built with docker compose.
+environment: local-k8s
+
+backend:
+  image:
+    repository: medislot-backend
+    tag: local
+    pullPolicy: Never
+frontend:
+  image:
+    repository: medislot-frontend
+    tag: local
+    pullPolicy: Never
+
+postgresql:
+  auth:
+    password: medislot-dev-only
+
+ingress:
+  className: traefik
+  host: medislot.local
+
+serviceMonitor:
+  enabled: true
+grafanaDashboard:
+  enabled: true

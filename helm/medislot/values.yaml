@@ -1,0 +1,103 @@
+# Default values for the MediSlot chart. Environment overlays:
+#   values-dev.yaml  -> local k3s / kind / minikube
+#   values-eks.yaml  -> AWS EKS (image tags are bumped by CI, synced by Argo CD)
+
+nameOverride: ""
+fullnameOverride: ""
+environment: kubernetes
+imagePullSecrets: []
+
+podSecurityContext:
+  runAsNonRoot: true
+  seccompProfile:
+    type: RuntimeDefault
+
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop: ["ALL"]
+
+backend:
+  replicaCount: 2
+  image:
+    repository: ghcr.io/ayushsingh199/medislot-backend
+    tag: ""  # defaults to .Chart.AppVersion
+    pullPolicy: IfNotPresent
+  port: 8000
+  runAsUser: 10001
+  logLevel: INFO
+  # Insert sample appointments on first install so the dashboard is not empty.
+  seedDemoData: true
+  resources:
+    requests: { cpu: 100m, memory: 128Mi }
+    limits: { cpu: 500m, memory: 384Mi }
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 6
+    targetCPUUtilizationPercentage: 60
+  podDisruptionBudget:
+    minAvailable: 1
+
+frontend:
+  replicaCount: 2
+  image:
+    repository: ghcr.io/ayushsingh199/medislot-frontend
+    tag: ""
+    pullPolicy: IfNotPresent
+  port: 8080
+  runAsUser: 101
+  resources:
+    requests: { cpu: 50m, memory: 32Mi }
+    limits: { cpu: 200m, memory: 128Mi }
+  autoscaling:
+    enabled: false
+    minReplicas: 2
+    maxReplicas: 4
+    targetCPUUtilizationPercentage: 70
+  podDisruptionBudget:
+    minAvailable: 1
+
+postgresql:
+  enabled: true
+  image:
+    repository: postgres
+    tag: 16-alpine
+    pullPolicy: IfNotPresent
+  database: medislot
+  username: medislot
+  auth:
+    # Use an existing Secret with keys `username` and `password` (recommended), or set
+    # `password` for throwaway environments. One of the two is required.
+    existingSecret: ""
+    password: ""
+  persistence:
+    size: 2Gi
+    storageClass: ""
+  resources:
+    requests: { cpu: 100m, memory: 256Mi }
+    limits: { cpu: 500m, memory: 512Mi }
+
+ingress:
+  enabled: true
+  className: traefik
+  host: ""  # empty = match any host (e.g. the raw load-balancer DNS name)
+  annotations: {}
+  tls: []
+
+networkPolicy:
+  # Only backend pods may open connections to PostgreSQL.
+  enabled: true
+
+serviceMonitor:
+  # Requires the Prometheus Operator CRDs (kube-prometheus-stack).
+  enabled: false
+  interval: 15s
+  labels: {}
+
+grafanaDashboard:
+  # ConfigMap picked up by the Grafana dashboard sidecar.
+  enabled: false
+  labels:
+    grafana_dashboard: "1"

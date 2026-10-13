@@ -1,0 +1,16 @@
+{{- range $component := list "backend" "frontend" }}
+{{- with (index $.Values $component).podDisruptionBudget }}
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "medislot.componentName" (list $ $component) }}
+  labels:
+    {{- include "medislot.labels" $ | nindent 4 }}
+spec:
+  minAvailable: {{ .minAvailable }}
+  selector:
+    matchLabels:
+      {{- include "medislot.selectorLabels" (list $ $component) | nindent 6 }}
+{{- end }}
+{{- end }}

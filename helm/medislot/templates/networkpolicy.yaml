@@ -1,0 +1,22 @@
+{{- if and .Values.networkPolicy.enabled .Values.postgresql.enabled }}
+# Defence in depth: the database only accepts traffic from backend pods.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "medislot.dbHost" . }}
+  labels:
+    {{- include "medislot.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "medislot.selectorLabels" (list . "postgres") | nindent 6 }}
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              {{- include "medislot.selectorLabels" (list . "backend") | nindent 14 }}
+      ports:
+        - port: 5432
+          protocol: TCP
+{{- end }}

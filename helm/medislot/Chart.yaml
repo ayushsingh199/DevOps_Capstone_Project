@@ -1,0 +1,14 @@
+apiVersion: v2
+name: medislot
+description: MediSlot clinic appointment platform — React frontend, FastAPI backend, PostgreSQL.
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+kubeVersion: ">=1.29.0-0"
+keywords: [fastapi, react, postgresql, clinic]
+home: https://github.com/ayushsingh199/DevOps_Capstone_Project
+sources:
+  - https://github.com/ayushsingh199/DevOps_Capstone_Project
+maintainers:
+  - name: Ayush Singh
+    url: https://github.com/ayushsingh199

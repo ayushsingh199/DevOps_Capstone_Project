@@ -1,0 +1,19 @@
+MediSlot {{ .Chart.AppVersion }} deployed as release "{{ .Release.Name }}" in namespace "{{ .Release.Namespace }}".
+
+  Backend image : {{ include "medislot.image" (list . .Values.backend.image) }}
+  Frontend image: {{ include "medislot.image" (list . .Values.frontend.image) }}
+
+Check the rollout:
+  kubectl get pods,svc,ingress,hpa -n {{ .Release.Namespace }}
+
+{{- if .Values.ingress.enabled }}
+Open the app through the ingress controller:
+  {{- if .Values.ingress.host }}
+  http://{{ .Values.ingress.host }}/
+  {{- else }}
+  kubectl get ingress {{ include "medislot.fullname" . }} -n {{ .Release.Namespace }} -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
+  {{- end }}
+{{- else }}
+Port-forward the frontend:
+  kubectl port-forward svc/{{ include "medislot.componentName" (list . "frontend") }} 8080:80 -n {{ .Release.Namespace }}
+{{- end }}
