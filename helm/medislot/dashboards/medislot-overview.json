@@ -49,7 +49,7 @@
     {
       "id": 1,
       "type": "stat",
-      "title": "Requests / sec",
+      "title": "Requests/s",
       "datasource": {
         "type": "prometheus",
         "uid": "${datasource}"
@@ -105,10 +105,26 @@
         "defaults": {
           "unit": "s",
           "color": {
-            "mode": "fixed",
-            "fixedColor": "purple"
+            "mode": "thresholds"
           },
-          "decimals": 3
+          "decimals": 3,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 0.3
+              },
+              {
+                "color": "red",
+                "value": 0.5
+              }
+            ]
+          }
         },
         "overrides": []
       },
@@ -131,7 +147,7 @@
     {
       "id": 3,
       "type": "stat",
-      "title": "5xx error rate",
+      "title": "5xx errors",
       "datasource": {
         "type": "prometheus",
         "uid": "${datasource}"
@@ -146,10 +162,26 @@
         "defaults": {
           "unit": "percent",
           "color": {
-            "mode": "fixed",
-            "fixedColor": "red"
+            "mode": "thresholds"
           },
-          "decimals": 2
+          "decimals": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 1
+              },
+              {
+                "color": "red",
+                "value": 5
+              }
+            ]
+          }
         },
         "overrides": []
       },
@@ -172,7 +204,7 @@
     {
       "id": 4,
       "type": "stat",
-      "title": "Backend pods up",
+      "title": "Pods up",
       "datasource": {
         "type": "prometheus",
         "uid": "${datasource}"
@@ -212,7 +244,7 @@
     {
       "id": 5,
       "type": "stat",
-      "title": "Appointments booked",
+      "title": "Booked",
       "datasource": {
         "type": "prometheus",
         "uid": "${datasource}"
@@ -252,7 +284,7 @@
     {
       "id": 6,
       "type": "stat",
-      "title": "Double-bookings blocked",
+      "title": "Clashes blocked",
       "datasource": {
         "type": "prometheus",
         "uid": "${datasource}"
