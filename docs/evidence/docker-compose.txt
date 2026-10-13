@@ -1,0 +1,33 @@
+$ docker compose up --build -d
+ Image medislot-backend:local Building 
+ Image medislot-frontend:local Building 
+ Image medislot-backend:local Built 
+ Image medislot-frontend:local Built 
+ Container medislot-backend-1 Recreate 
+ Container medislot-backend-1 Recreated 
+ Container medislot-frontend-1 Recreate 
+ Container medislot-frontend-1 Recreated 
+ Container medislot-postgres-1 Starting 
+ Container medislot-postgres-1 Started 
+ Container medislot-postgres-1 Waiting 
+ Container medislot-postgres-1 Healthy 
+ Container medislot-backend-1 Starting 
+ Container medislot-backend-1 Started 
+ Container medislot-backend-1 Waiting 
+ Container medislot-backend-1 Healthy 
+ Container medislot-frontend-1 Starting 
+ Container medislot-frontend-1 Started 
+
+$ docker compose ps
+NAME                  IMAGE                     STATUS                            PORTS
+medislot-backend-1    medislot-backend:local    Up 49 seconds (healthy)           0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp
+medislot-frontend-1   medislot-frontend:local   Up 3 seconds (health: starting)   0.0.0.0:3000->8080/tcp, [::]:3000->8080/tcp
+medislot-postgres-1   postgres:16-alpine        Up 59 seconds (healthy)           0.0.0.0:5432->5432/tcp, [::]:5432->5432/tcp
+
+$ docker compose exec backend id
+uid=10001(app) gid=10001(app) groups=10001(app)
+$ docker compose exec frontend id
+uid=101(nginx) gid=101(nginx) groups=101(nginx)
+
+$ curl -s localhost:3000/api/info
+{"service":"MediSlot API","version":"local-dev","environment":"docker-compose"}

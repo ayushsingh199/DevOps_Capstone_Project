@@ -35,6 +35,7 @@ React + FastAPI + PostgreSQL → pytest → Docker → GitHub Actions → Trivy 
 14. [Observability: Prometheus + Grafana](#14-observability-prometheus--grafana)
 15. [Troubleshooting lab](#15-troubleshooting-lab)
 16. [Tear down (cost control)](#16-tear-down-cost-control)
+    - [Evidence](#evidence-captured-from-the-live-eks-deployment)
 17. [Rubric map](#17-rubric-map)
 18. [Design decisions](#18-design-decisions)
 
@@ -95,7 +96,7 @@ commits the new tag to Git; Argo CD, running inside the cluster, pulls that chan
 | Containers | Docker multi-stage builds, Docker Compose |
 | CI/CD | GitHub Actions, GitHub Container Registry (GHCR) |
 | Security | Trivy image scanning (gate + SARIF), SHA-pinned actions, non-root images, Pod Security "restricted", NetworkPolicy |
-| Infrastructure | Terraform, AWS VPC, EKS (terraform-aws-modules), EBS CSI via Pod Identity |
+| Infrastructure | Terraform, AWS VPC, EKS 1.36 (terraform-aws-modules), EBS CSI via Pod Identity |
 | Kubernetes | Helm 3/4 chart, Traefik Ingress, HPA, PDB, StatefulSet |
 | GitOps | Argo CD |
 | Observability | kube-prometheus-stack (Prometheus Operator, Grafana), ServiceMonitor, PrometheusRule |
@@ -306,9 +307,9 @@ terraform/
 | Public subnets | `10.20.0.0/24`, `10.20.1.0/24` (2 AZs), tagged `kubernetes.io/role/elb` |
 | Private subnets | `10.20.10.0/24`, `10.20.11.0/24`, tagged `kubernetes.io/role/internal-elb` |
 | NAT | one shared NAT gateway (`single_nat_gateway = true` keeps cost down) |
-| EKS | `medislot-dev-eks`, Kubernetes 1.34, public + private endpoint, creator gets admin via access entry |
+| EKS | `medislot-dev-eks`, Kubernetes 1.36, public + private endpoint, creator gets admin via access entry |
 | Add-ons | vpc-cni, kube-proxy, coredns, eks-pod-identity-agent, aws-ebs-csi-driver, metrics-server |
-| Node group | `medislot-dev-general`: 3 × t3.medium (min 2, max 4), AL2023, private subnets |
+| Node group | `medislot-dev-general`: 2 × t3.large (min 2, max 3), AL2023, private subnets. New AWS accounts start with a 5-vCPU On-Demand quota, and 2 × t3.large (4 vCPU, 35 pods per node) fits it |
 
 ```bash
 aws configure                                # credentials stay in ~/.aws, never in this repo
@@ -379,6 +380,13 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath='{.data.pas
 Rollback means reverting the deploy commit in Git: Argo CD converges the cluster back.
 `selfHeal` also reverts manual `kubectl edit` drift.
 
+Argo CD polls Git every 60 s (plus jitter), and its repo-server caches Git lookups, so a release can
+take a couple of minutes to appear. Press **Refresh** in the Argo CD UI to sync immediately. A GitHub
+webhook to Argo CD would make this instant, but it needs a public Argo CD endpoint.
+
+The deploy job is serialized (`concurrency: deploy-eks`) and skips commits that a newer commit has
+already superseded, so two pipelines finishing together can never roll production backwards.
+
 ## 13. Autoscaling (HPA)
 
 The backend HPA (`autoscaling/v2`) scales from 2 to 6 replicas at 60% average CPU of the requested
@@ -429,8 +437,29 @@ Service and the EBS volume behind the Postgres PVC. The script deletes those fir
 namespace → Traefik → wait for the load balancer to disappear), then runs `terraform destroy`.
 Destroying the VPC while the NLB still exists fails on dependent network interfaces.
 
-Approximate running cost in ap-south-1: EKS control plane $0.10/h + 3 × t3.medium ≈ $0.13/h +
-NAT gateway ≈ $0.06/h + NLB ≈ $0.03/h, so **about $0.32 per hour**.
+Approximate running cost in ap-south-1: EKS control plane $0.10/h + 2 × t3.large ≈ $0.18/h +
+NAT gateway ≈ $0.06/h + NLB ≈ $0.03/h, so **about $0.37 per hour**.
+
+## Evidence (captured from the live EKS deployment)
+
+Raw command output is in [`docs/evidence/`](docs/evidence/); images are in [`docs/screenshots/`](docs/screenshots/).
+
+| What | Screenshot |
+|------|-----------|
+| App on EKS through the Ingress / AWS NLB (build SHA + `eks-dev` in the sidebar) | ![app](docs/screenshots/app-dashboard.png) |
+| Appointments view · booking modal · mobile layout | [appointments](docs/screenshots/app-appointments.png) · [modal](docs/screenshots/app-booking-modal.png) · [mobile](docs/screenshots/app-mobile.png) |
+| `pytest -v`: 23 passed, 97% coverage (M2) | ![pytest](docs/screenshots/pytest.png) |
+| `docker compose up --build` + non-root `id` (M4) | [terminal](docs/screenshots/docker-compose.png) · [browser at localhost:3000](docs/screenshots/compose-localhost-3000.png) |
+| GitHub Actions run, all jobs green (M5) | ![actions](docs/screenshots/github-actions-run.png) |
+| GHCR package with commit-SHA tags only (M5) | [ghcr](docs/screenshots/ghcr-backend-package.png) |
+| Trivy gate output from the pipeline (M6) | [trivy](docs/screenshots/trivy-ci.png) |
+| `terraform plan` (60 to add) and `apply` (M7) | [plan](docs/screenshots/terraform-plan-summary.png) · [apply](docs/screenshots/terraform-apply-summary.png) |
+| `kubectl get pods/svc/ingress/hpa`, `helm list`, Argo CD app (M8) | ![k8s](docs/screenshots/k8s-status.png) |
+| `curl` of the backend `/metrics` (M9) | [metrics](docs/screenshots/metrics.png) |
+| Prometheus targets: `serviceMonitor/medislot/medislot-backend` 2/2 UP (M9) | ![targets](docs/screenshots/prometheus-targets.png) |
+| Grafana *MediSlot · Service Overview* with live traffic and HPA scaling (M9) | ![grafana](docs/screenshots/grafana-dashboard.png) |
+| Argo CD: Synced + Healthy on the CI release commit | ![argocd](docs/screenshots/argocd-app.png) |
+| Commit history | [commits](docs/screenshots/github-commits.png) |
 
 ## 17. Rubric map
 

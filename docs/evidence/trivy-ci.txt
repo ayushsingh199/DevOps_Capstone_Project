@@ -1,0 +1,31 @@
+# GitHub Actions run 38403071059 — job 'Image · backend', step 'Trivy gate' (severity HIGH,CRITICAL · ignore-unfixed · exit-code 1)
+$ trivy image --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 ghcr.io/ayushsingh199/medislot-backend:367dd8c…
+Report Summary
+
+┌──────────────────────────────────────────────────────────────────────────────────┬────────────┬─────────────────┬─────────┐
+│                                      Target                                      │    Type    │ Vulnerabilities │ Secrets │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ ghcr.io/ayushsingh199/medislot-backend:367dd8c84bbe13b89028c11ed835a70cc5f0b7b6  │   debian   │        0        │    -    │
+│ (debian 13.7)                                                                    │            │                 │         │
+├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ usr/local/lib/python3.12/site-packages/alembic-1.20.0.dist-info/METADATA         │ python-pkg │        0        │    -    │
+│ … 28 more Python packages (fastapi, starlette, sqlalchemy, uvicorn …), all 0 vulnerabilities │
+Legend:
+- '-': Not scanned
+- '0': Clean (no security findings detected)
+
+# job 'Image · frontend', step 'Trivy gate'
+$ trivy image --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 ghcr.io/ayushsingh199/medislot-frontend:367dd8c…
+Report Summary
+
+┌──────────────────────────────────────────────────────────────────────────────────┬────────┬─────────────────┬─────────┐
+│                                      Target                                      │  Type  │ Vulnerabilities │ Secrets │
+├──────────────────────────────────────────────────────────────────────────────────┼────────┼─────────────────┼─────────┤
+│ ghcr.io/ayushsingh199/medislot-frontend:367dd8c84bbe13b89028c11ed835a70cc5f0b7b6 │ alpine │        0        │    -    │
+│ (alpine 3.23.4)                                                                  │        │                 │         │
+└──────────────────────────────────────────────────────────────────────────────────┴────────┴─────────────────┴─────────┘
+Legend:
+- '-': Not scanned
+- '0': Clean (no security findings detected)
+
+Result: exit code 0 for both images → gate passed → images pushed to GHCR

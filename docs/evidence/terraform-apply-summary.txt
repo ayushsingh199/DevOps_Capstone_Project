@@ -1,0 +1,38 @@
+$ terraform apply tfplan
+...
+module.vpc.aws_vpc.this[0]: Creation complete after 3s 
+module.vpc.aws_subnet.public[0]: Creation complete after 1s 
+module.vpc.aws_subnet.public[1]: Creation complete after 1s 
+module.vpc.aws_subnet.private[1]: Creation complete after 1s 
+module.vpc.aws_subnet.private[0]: Creation complete after 1s 
+module.vpc.aws_nat_gateway.this[0]: Creation complete after 44s 
+module.eks.aws_eks_cluster.this[0]: Creation complete after 9m52s 
+module.eks.aws_eks_addon.before_compute["vpc-cni"]: Creation complete after 14s 
+module.eks.aws_eks_addon.before_compute["eks-pod-identity-agent"]: Creation complete after 24s 
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Creation complete after 2m0s 
+module.eks.aws_eks_addon.this["coredns"]: Creation complete after 14s 
+module.eks.aws_eks_addon.this["kube-proxy"]: Creation complete after 24s 
+module.eks.aws_eks_addon.this["metrics-server"]: Creation complete after 45s 
+module.eks.aws_eks_addon.this["aws-ebs-csi-driver"]: Creation complete after 46s 
+
+Apply complete! Resources: 60 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+cluster_endpoint = "https://CFBDF62614223220CC35D97FDD4EA2AC.gr7.ap-south-1.eks.amazonaws.com"
+cluster_name = "medislot-dev-eks"
+cluster_version = "1.36"
+configure_kubectl = "aws eks update-kubeconfig --region ap-south-1 --name medislot-dev-eks"
+node_group_names = [
+  "medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b",
+]
+private_subnet_ids = [
+  "subnet-04ad03fe64e57eaa0",
+  "subnet-0c920e0ba68314b56",
+]
+public_subnet_ids = [
+  "subnet-0e023e0a50d469c3d",
+  "subnet-079e81876e320c6a0",
+]
+region = "ap-south-1"
+vpc_id = "vpc-07760798354aad45f"

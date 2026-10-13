@@ -82,8 +82,9 @@ AWS Console: VPC → the `medislot-dev-vpc` with its 4 subnets; EKS → `medislo
 
 ## 5. Argo CD (≈2 min)
 
-Argo CD UI → `medislot` application: **Synced / Healthy**. Within about a minute of the CI deploy
-commit, open *History and rollback* and show the new revision. Click the resource tree to show the
+Argo CD UI → `medislot` application: **Synced / Healthy**. After the CI deploy commit appears, click
+**Refresh** (Argo CD polls every 1–2 minutes and caches Git lookups; Refresh syncs immediately), then
+open *History and rollback* and show the new revision. Click the resource tree to show the
 Deployments, the ReplicaSet with the new image and the rolling update.
 
 ## 6. Kubernetes (≈2 min)

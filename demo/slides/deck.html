@@ -342,7 +342,7 @@
 </section>
 
 <!-- 14 Challenges -->
-<section class="slide" data-notes="Pick two or three of these and tell them as short stories: what broke, how you diagnosed it, what you changed.">
+<section class="slide" data-notes="Pick two or three of these and tell them as short stories: what broke, how you diagnosed it, what you changed. Also good to mention: the wait-for-db init container hung because UID 10001 has no passwd entry, so pg_isready needed an explicit -U.">
   <div class="kicker">Lessons learned</div>
   <h1>What broke, and what I changed</h1>
   <div class="body" style="display:grid; grid-template-columns: 1fr 1fr; gap:18px">
@@ -350,8 +350,8 @@
     <div class="card"><h2>New-account vCPU quota</h2><p>5 vCPUs On-Demand, so 3 × t3.medium (6 vCPU) wouldn't launch. Resized to 2 × t3.large: 4 vCPU and more pods per node.</p></div>
     <div class="card"><h2>ingress-nginx retired</h2><p>The community controller was retired in March 2026, so I chose Traefik while keeping a standard <code>networking.k8s.io/v1</code> Ingress.</p></div>
     <div class="card"><h2>Helm 4 wait semantics</h2><p>The new "watcher" wait hung on a CRD-heavy chart; the bootstrap script now picks the right wait strategy for Helm 3 or 4.</p></div>
-    <div class="card"><h2>Teardown order matters</h2><p>NLBs and EBS volumes are created by Kubernetes, not Terraform. Deleting them first keeps <code>terraform destroy</code> clean.</p></div>
-    <div class="card"><h2>Migration races</h2><p>Two replicas starting together could both migrate. A Postgres advisory lock makes them take turns.</p></div>
+    <div class="card"><h2>Two pipelines, one tag file</h2><p>Back-to-back pushes made two deploy jobs rebase the same lines and conflict. Releases are now serialized, superseded commits are skipped, and retries re-apply instead of rebasing.</p></div>
+    <div class="card"><h2>Grafana OOMKilled</h2><p>Under use, Grafana with ~25 bundled dashboards exceeded its 384 Mi limit (exit 137). Found it via <code>lastState.terminated</code> and raised the limit to 768 Mi.</p></div>
   </div>
   <div class="footer"><span>MediSlot</span><span>14</span></div>
 </section>

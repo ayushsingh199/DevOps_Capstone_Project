@@ -1,0 +1,57 @@
+$ cd backend && pytest -v --cov
+============================= test session starts ==============================
+platform darwin -- Python 3.11.15, pytest-9.1.1, pluggy-1.6.0 -- DevOps_Capstone_Project/backend/.venv/bin/python3.11
+rootdir: DevOps_Capstone_Project/backend
+configfile: pytest.ini
+testpaths: tests
+plugins: cov-7.1.0, anyio-4.15.1
+collecting ... collected 23 items
+
+tests/test_appointments.py::test_create_appointment PASSED               [  4%]
+tests/test_appointments.py::test_get_appointment_by_id PASSED            [  8%]
+tests/test_appointments.py::test_list_appointments_with_filters PASSED   [ 13%]
+tests/test_appointments.py::test_update_appointment_status_and_reschedule PASSED [ 17%]
+tests/test_appointments.py::test_delete_appointment PASSED               [ 21%]
+tests/test_appointments.py::test_double_booking_is_rejected PASSED       [ 26%]
+tests/test_appointments.py::test_back_to_back_slots_are_allowed PASSED   [ 30%]
+tests/test_appointments.py::test_cancelled_slot_can_be_rebooked PASSED   [ 34%]
+tests/test_appointments.py::test_validation_errors_return_422 PASSED     [ 39%]
+tests/test_appointments.py::test_booking_unknown_doctor_returns_404 PASSED [ 43%]
+tests/test_appointments.py::test_update_missing_appointment_returns_404 PASSED [ 47%]
+tests/test_appointments.py::test_stats_aggregate_dashboard_kpis PASSED   [ 52%]
+tests/test_doctors.py::test_list_doctors_returns_seeded_roster PASSED    [ 56%]
+tests/test_doctors.py::test_create_and_fetch_doctor PASSED               [ 60%]
+tests/test_doctors.py::test_unknown_doctor_returns_404 PASSED            [ 65%]
+tests/test_doctors.py::test_cannot_delete_doctor_with_appointments PASSED [ 69%]
+tests/test_doctors.py::test_delete_doctor_without_history PASSED         [ 73%]
+tests/test_health.py::test_health_returns_ok PASSED                      [ 78%]
+tests/test_health.py::test_ready_checks_database PASSED                  [ 82%]
+tests/test_health.py::test_info_exposes_build_version PASSED             [ 86%]
+tests/test_health.py::test_metrics_endpoint_is_prometheus_format PASSED  [ 91%]
+tests/test_health.py::test_responses_carry_request_id PASSED             [ 95%]
+tests/test_migrations.py::test_migrations_upgrade_and_downgrade PASSED   [100%]
+
+================================ tests coverage ================================
+______________ coverage: platform darwin, python 3.11.15-final-0 _______________
+
+Name                           Stmts   Miss  Cover
+--------------------------------------------------
+app/__init__.py                    0      0   100%
+app/config.py                     13      0   100%
+app/database.py                   15      4    73%
+app/exceptions.py                  9      0   100%
+app/logging_config.py             17      1    94%
+app/main.py                       37      0   100%
+app/metrics.py                     4      0   100%
+app/models.py                     31      0   100%
+app/routers/__init__.py            0      0   100%
+app/routers/appointments.py       28      0   100%
+app/routers/doctors.py            21      0   100%
+app/routers/health.py             30      5    83%
+app/schemas.py                    62      1    98%
+app/services/__init__.py           0      0   100%
+app/services/appointments.py      95      1    99%
+app/services/doctors.py           29      0   100%
+--------------------------------------------------
+TOTAL                            391     12    97%
+============================== 23 passed in 3.14s ==============================

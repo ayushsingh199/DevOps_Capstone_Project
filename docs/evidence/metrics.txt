@@ -1,0 +1,9 @@
+$ kubectl -n medislot port-forward svc/medislot-backend 8000:8000 &
+$ curl -s http://localhost:8000/metrics | grep -E "^(http_requests_total|http_request_duration_seconds_count|medislot_)"
+medislot_booking_conflicts_total 0.0
+http_requests_total{handler="/health",method="GET",status="2xx"} 8.0
+http_requests_total{handler="/ready",method="GET",status="2xx"} 12.0
+http_requests_total{handler="/api/appointments/stats",method="GET",status="2xx"} 1.0
+http_request_duration_seconds_count{handler="/health",method="GET"} 8.0
+http_request_duration_seconds_count{handler="/ready",method="GET"} 12.0
+http_request_duration_seconds_count{handler="/api/appointments/stats",method="GET"} 1.0

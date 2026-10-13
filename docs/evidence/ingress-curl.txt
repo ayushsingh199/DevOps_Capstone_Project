@@ -1,0 +1,20 @@
+$ curl http://aa2896c23b0724dcd89631cfcc66b8be-e535d6ddf30c6272.elb.ap-south-1.amazonaws.com/api/info
+{"service":"MediSlot API","version":"367dd8c84bbe13b89028c11ed835a70cc5f0b7b6","environment":"eks-dev"}
+
+$ curl -s http://aa2896c23b0724dcd89631cfcc66b8be-e535d6ddf30c6272.elb.ap-south-1.amazonaws.com/api/appointments/stats | jq
+{
+    "total": 80,
+    "today": 2,
+    "upcoming": 74,
+    "by_status": {
+        "scheduled": 75,
+        "checked_in": 1,
+        "completed": 2,
+        "cancelled": 1,
+        "no_show": 1
+    },
+    "completion_rate": 66.7,
+    "doctor_load": [
+        {
+            "doctor_id": 6,
+            "full_name": "Dr. Arjun Bose",
