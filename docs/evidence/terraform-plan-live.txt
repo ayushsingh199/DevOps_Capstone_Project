@@ -1,0 +1,27 @@
+$ terraform plan
+module.eks.module.kms.data.aws_caller_identity.current[0]: Reading...
+data.aws_availability_zones.available: Reading...
+data.aws_iam_policy_document.pod_identity_trust: Reading...
+module.eks.data.aws_caller_identity.current[0]: Reading...
+module.eks.module.kms.data.aws_partition.current[0]: Reading...
+module.eks.module.eks_managed_node_group["general"].data.aws_iam_policy_document.assume_role_policy[0]: Reading...
+No changes. Your infrastructure matches the configuration.
+
+$ terraform output
+cluster_endpoint = "https://CFBDF62614223220CC35D97FDD4EA2AC.gr7.ap-south-1.eks.amazonaws.com"
+cluster_name = "medislot-dev-eks"
+cluster_version = "1.36"
+configure_kubectl = "aws eks update-kubeconfig --region ap-south-1 --name medislot-dev-eks"
+node_group_names = [
+  "medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b",
+]
+private_subnet_ids = [
+  "subnet-04ad03fe64e57eaa0",
+  "subnet-0c920e0ba68314b56",
+]
+public_subnet_ids = [
+  "subnet-0e023e0a50d469c3d",
+  "subnet-079e81876e320c6a0",
+]
+region = "ap-south-1"
+vpc_id = "vpc-07760798354aad45f"

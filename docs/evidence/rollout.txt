@@ -1,0 +1,38 @@
+$ kubectl -n medislot rollout status deploy/medislot-backend
+deployment "medislot-backend" successfully rolled out
+
+$ kubectl -n medislot rollout status deploy/medislot-frontend
+deployment "medislot-frontend" successfully rolled out
+
+$ kubectl get pods -n medislot
+NAME                                 READY   STATUS    RESTARTS   AGE
+medislot-backend-76d955b8f5-6zfh4    1/1     Running   0          4m7s
+medislot-backend-76d955b8f5-fq5q5    1/1     Running   0          3m48s
+medislot-frontend-6874c5cc87-qm2qf   1/1     Running   0          4m3s
+medislot-frontend-6874c5cc87-tscrj   1/1     Running   0          4m7s
+medislot-postgres-0                  1/1     Running   0          7h9m
+
+$ kubectl -n medislot get deploy -o 'custom-columns=DEPLOYMENT:.metadata.name,IMAGE:.spec.template.spec.containers[0].image,READY:.status.readyReplicas'
+DEPLOYMENT          IMAGE                                                                              READY
+medislot-backend    ghcr.io/ayushsingh199/medislot-backend:0e3529f6edee03075e8a9d06e9029f71c649cb38    2
+medislot-frontend   ghcr.io/ayushsingh199/medislot-frontend:0e3529f6edee03075e8a9d06e9029f71c649cb38   2
+
+$ kubectl get svc,ingress,hpa -n medislot
+NAME                        TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+service/medislot-backend    ClusterIP   172.20.169.55    <none>        8000/TCP   7h9m
+service/medislot-frontend   ClusterIP   172.20.238.142   <none>        80/TCP     7h9m
+service/medislot-postgres   ClusterIP   172.20.66.47     <none>        5432/TCP   7h9m
+
+NAME                                 CLASS     HOSTS   ADDRESS                                                                          PORTS   AGE
+ingress.networking.k8s.io/medislot   traefik   *       aa2896c23b0724dcd89631cfcc66b8be-e535d6ddf30c6272.elb.ap-south-1.amazonaws.com   80      7h9m
+
+NAME                                                   REFERENCE                     TARGETS        MINPODS   MAXPODS   REPLICAS   AGE
+horizontalpodautoscaler.autoscaling/medislot-backend   Deployment/medislot-backend   cpu: 63%/60%   2         6         2          7h9m
+
+$ helm list -A
+NAME      	NAMESPACE 	REVISION	UPDATED                             	STATUS  	CHART                       	APP VERSION
+argocd    	argocd    	1       	2026-10-13 18:33:03.566187 +0530 IST	deployed	argo-cd-10.10.3             	v3.5.5     
+medislot  	medislot  	2       	2026-10-13 18:31:10.268495 +0530 IST	deployed	medislot-1.0.0              	1.0.0      
+monitoring	monitoring	2       	2026-10-13 18:58:42.845518 +0530 IST	deployed	kube-prometheus-stack-92.3.0	v0.94.1    
+traefik   	traefik   	1       	2026-10-13 14:01:31.610046 +0530 IST	deployed	traefik-41.7.1              	v3.7.14    
+

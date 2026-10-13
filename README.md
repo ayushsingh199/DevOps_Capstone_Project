@@ -477,7 +477,7 @@ Raw command output is in [`docs/evidence/`](docs/evidence/); images are in [`doc
 | M7 | VPC with 2 public subnets, EKS + node group, tfvars example | `terraform/` |
 | M8 | Namespace, Helm chart, ≥ 2 replicas, ClusterIP, Ingress `/` + `/api` | `k8s/namespace.yaml`, `helm/medislot/` |
 | M9 | `/metrics`, Prometheus scraping, Grafana dashboard | `backend/app/main.py`, `monitoring/`, chart ServiceMonitor + dashboard |
-| M10 | README, presentation | this file, `demo/` |
+| M10 | README, presentation video + slides | this file, [`demo/MediSlot-Capstone-Demo.mp4`](demo/MediSlot-Capstone-Demo.mp4) (10 min, narrated), [`demo/MediSlot-Capstone.pdf`](demo/MediSlot-Capstone.pdf) / `.pptx` |
 
 ## 18. Design decisions
 
