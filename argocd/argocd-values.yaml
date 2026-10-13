@@ -1,0 +1,18 @@
+# Argo CD (argo/argo-cd chart) trimmed for a small cluster.
+configs:
+  params:
+    server.insecure: true # TLS terminated by `kubectl port-forward` in the demo
+  cm:
+    timeout.reconciliation: 60s # poll Git every minute
+dex:
+  enabled: false
+notifications:
+  enabled: false
+applicationSet:
+  replicas: 1
+server:
+  replicas: 1
+repoServer:
+  replicas: 1
+controller:
+  replicas: 1
