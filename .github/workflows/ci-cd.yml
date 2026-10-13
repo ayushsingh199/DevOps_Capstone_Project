@@ -194,32 +194,45 @@ jobs:
     needs: build-scan-push
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    # Releases are serialized: two pipelines finishing together must not race on the tag file.
+    concurrency:
+      group: deploy-eks
+      cancel-in-progress: false
     permissions:
       contents: write # commit the new image tag back to the repo
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
 
-      - name: Point the EKS environment at the new images
-        run: |
-          yq -i '.backend.image.tag = strenv(GITHUB_SHA) | .frontend.image.tag = strenv(GITHUB_SHA)' \
-            helm/medislot/values-eks.yaml
-          git diff --stat
-
-      - name: Commit and push the release
+      - name: Release the new images (skip if a newer commit superseded this one)
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add helm/medislot/values-eks.yaml
-          git commit -m "deploy: release medislot ${GITHUB_SHA::7} to EKS [skip ci]"
-          pushed=false
           for attempt in 1 2 3; do
-            if git pull --rebase origin main && git push origin HEAD:main; then
-              pushed=true && break
+            git fetch -q origin main
+            git reset -q --hard origin/main
+            latest_app_commit=$(git log -1 --format=%H --invert-grep --grep='^deploy: release' origin/main)
+            if [ "$latest_app_commit" != "$GITHUB_SHA" ]; then
+              echo "::notice::${GITHUB_SHA::7} superseded by ${latest_app_commit::7}; its own pipeline will release it."
+              echo "### ⏭️ Skipped: \`${GITHUB_SHA::7}\` superseded by \`${latest_app_commit::7}\`" >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+            # Re-applying the edit on top of the latest main (instead of rebasing) cannot conflict.
+            yq -i '.backend.image.tag = strenv(GITHUB_SHA) | .frontend.image.tag = strenv(GITHUB_SHA)' \
+              helm/medislot/values-eks.yaml
+            if git diff --quiet; then
+              echo "::notice::${GITHUB_SHA::7} is already the released version." && exit 0
+            fi
+            git commit -qam "deploy: release medislot ${GITHUB_SHA::7} to EKS [skip ci]"
+            if git push -q origin HEAD:main; then
+              {
+                echo "### 🚀 Released \`${GITHUB_SHA::7}\`"
+                echo "Argo CD detects the change in \`helm/medislot/values-eks.yaml\` and rolls it out to EKS."
+              } >> "$GITHUB_STEP_SUMMARY"
+              exit 0
             fi
             sleep $((attempt * 5))
           done
-          [ "$pushed" = true ] || { echo "::error::could not push release commit"; exit 1; }
-          {
-            echo "### 🚀 Released \`${GITHUB_SHA::7}\`"
-            echo "Argo CD detects the change in \`helm/medislot/values-eks.yaml\` and rolls it out to EKS."
-          } >> "$GITHUB_STEP_SUMMARY"
+          echo "::error::could not push release commit"
+          exit 1
