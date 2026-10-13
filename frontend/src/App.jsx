@@ -9,7 +9,7 @@ import DoctorsView from "./components/DoctorsView.jsx";
 import StatusFilter from "./components/StatusFilter.jsx";
 
 const VIEWS = {
-  dashboard: { title: "Clinic overview", subtitle: "Today's schedule and patient flow" },
+  dashboard: { title: "Clinic overview", subtitle: "Today's schedule, live on AWS EKS" },
   appointments: { title: "Appointments", subtitle: "Book, reschedule and track every visit" },
   doctors: { title: "Doctors", subtitle: "Clinicians and their current load" },
 };
