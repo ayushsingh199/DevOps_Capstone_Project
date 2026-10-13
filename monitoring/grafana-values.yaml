@@ -23,6 +23,7 @@ grafana:
     enabled: false
   service:
     type: ClusterIP
+  # ~25 bundled dashboards keep Grafana near 400 Mi at idle; 384 Mi was OOMKilled under use.
   resources:
-    requests: { cpu: 50m, memory: 128Mi }
-    limits: { memory: 384Mi }
+    requests: { cpu: 50m, memory: 256Mi }
+    limits: { memory: 768Mi }
