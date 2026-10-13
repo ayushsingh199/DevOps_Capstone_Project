@@ -41,7 +41,9 @@ spec:
         # 1) block until PostgreSQL accepts connections
         - name: wait-for-db
           image: "{{ .Values.postgresql.image.repository }}:{{ .Values.postgresql.image.tag }}"
-          command: ["sh", "-c", "until pg_isready -h {{ include "medislot.dbHost" . }} -p 5432; do echo waiting for db; sleep 2; done"]
+          # -U is required: this container runs as UID 10001, which has no passwd entry, so libpq
+          # cannot derive a default user and pg_isready would report "no attempt" forever.
+          command: ["sh", "-c", "until pg_isready -h {{ include "medislot.dbHost" . }} -p 5432 -U {{ .Values.postgresql.username }}; do echo waiting for db; sleep 2; done"]
           securityContext:
             {{- toYaml .Values.containerSecurityContext | nindent 12 }}
           resources:
