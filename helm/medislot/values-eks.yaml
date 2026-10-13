@@ -1,26 +1,22 @@
 # AWS EKS environment. Managed by Argo CD; CI rewrites the two image tags on every
 # successful build of main, which is what triggers a rollout.
 environment: eks-dev
-
 backend:
   image:
     repository: ghcr.io/ayushsingh199/medislot-backend
-    tag: "bootstrap"
+    tag: "1506aeef9898824fb7abd6a7d02c86e1db04711f"
 frontend:
   image:
     repository: ghcr.io/ayushsingh199/medislot-frontend
-    tag: "bootstrap"
-
+    tag: "1506aeef9898824fb7abd6a7d02c86e1db04711f"
 postgresql:
   auth:
-    existingSecret: medislot-db  # created by scripts/bootstrap-cluster.sh, never committed
+    existingSecret: medislot-db # created by scripts/bootstrap-cluster.sh, never committed
   persistence:
     storageClass: gp3
-
 ingress:
   className: traefik
   host: ""
-
 serviceMonitor:
   enabled: true
 grafanaDashboard:
