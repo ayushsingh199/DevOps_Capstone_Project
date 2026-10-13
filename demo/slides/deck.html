@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>MediSlot · DevOps Capstone</title>
+<style>
+  :root {
+    --ink: #0f1f24; --muted: #5a6e74; --brand: #0f766e; --brand-2: #14b8a6;
+    --brand-soft: #e6f4f2; --night: #0b2a30; --night-2: #12404a; --line: #dfe8ea;
+    --amber: #f59e0b; --rose: #e11d48; --blue: #2563eb;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: #888; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; color: var(--ink); }
+  .slide {
+    width: 1280px; height: 720px; position: relative; overflow: hidden; background: #fff;
+    padding: 56px 64px; margin: 0 auto 24px; display: flex; flex-direction: column;
+    page-break-after: always; break-after: page;
+  }
+  .slide.dark { background: var(--night); color: #fff; }
+  h1 { font-size: 40px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; }
+  h2 { font-size: 20px; font-weight: 700; }
+  .kicker { font-size: 15px; font-weight: 700; color: var(--brand); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 10px; }
+  .dark .kicker { color: var(--brand-2); }
+  .lead { font-size: 19px; color: var(--muted); margin-top: 12px; line-height: 1.45; max-width: 1000px; }
+  .dark .lead { color: #b8d3d1; }
+  .body { flex: 1; display: flex; gap: 32px; margin-top: 30px; min-height: 0; }
+  .col { flex: 1; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+  .card { background: #f6fafa; border-radius: 16px; padding: 18px 20px; }
+  .card h2 { margin-bottom: 6px; }
+  .card p, li { font-size: 16px; line-height: 1.45; color: #31464c; }
+  ul { padding-left: 20px; display: grid; gap: 7px; }
+  .num { font-size: 56px; font-weight: 800; color: var(--brand); line-height: 1; }
+  .num small { font-size: 22px; }
+  .stat-label { font-size: 15px; color: var(--muted); margin-top: 4px; }
+  .icon { width: 44px; height: 44px; border-radius: 50%; background: var(--brand); color: #fff; display: grid; place-items: center; font-size: 22px; font-weight: 700; flex-shrink: 0; }
+  .row { display: flex; gap: 14px; align-items: flex-start; }
+  .shot { border-radius: 14px; box-shadow: 0 10px 30px rgb(0 0 0 / 18%); width: 100%; height: 100%; object-fit: cover; object-position: top left; border: 1px solid var(--line); }
+  .shot-wrap { flex: 1.35; min-height: 0; display: flex; }
+  .footer { position: absolute; bottom: 22px; left: 64px; right: 64px; display: flex; justify-content: space-between; font-size: 13px; color: #8aa0a5; }
+  .dark .footer { color: #6f9690; }
+  code { font-family: Menlo, monospace; font-size: 0.88em; background: var(--brand-soft); color: var(--brand); padding: 1px 6px; border-radius: 6px; }
+  .dark code { background: var(--night-2); color: #7ee7d9; }
+  table { border-collapse: collapse; width: 100%; font-size: 15px; }
+  td, th { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--muted); font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; }
+  /* pipeline */
+  .flow { display: flex; align-items: stretch; gap: 10px; }
+  .stage { flex: 1; border-radius: 14px; padding: 16px; background: #f6fafa; display: flex; flex-direction: column; gap: 6px; }
+  .stage b { font-size: 17px; }
+  .stage span { font-size: 14px; color: #3b5257; line-height: 1.4; }
+  .arrow { align-self: center; font-size: 26px; color: var(--brand); font-weight: 700; }
+  .gate { background: #fff4e5; } .ship { background: var(--brand-soft); }
+  .pill { display: inline-block; font-size: 12px; font-weight: 700; padding: 3px 9px; border-radius: 999px; background: var(--brand); color: #fff; align-self: flex-start; }
+  .pill.amber { background: var(--amber); } .pill.rose { background: var(--rose); }
+  /* architecture boxes */
+  .box { border: 2px solid var(--line); border-radius: 14px; padding: 12px 14px; font-size: 15px; background: #fff; }
+  .box b { display: block; font-size: 16px; margin-bottom: 2px; }
+  .zone { border: 2px dashed #9cc9c3; border-radius: 18px; padding: 14px; position: relative; }
+  .zone > .tag { position: absolute; top: -12px; left: 16px; background: #fff; padding: 0 8px; font-size: 13px; font-weight: 700; color: var(--brand); }
+  .title-hero h1 { font-size: 62px; }
+  .big-quote { font-size: 30px; font-weight: 700; line-height: 1.3; }
+</style>
+</head>
+<body>
+
+<!-- 1 Title -->
+<section class="slide dark title-hero" data-notes="Introduce yourself and the project in one sentence: a clinic appointment platform taken from laptop to a monitored, autoscaled, GitOps-managed EKS deployment.">
+  <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:22px; max-width: 880px;">
+    <div class="kicker">DevOps Final Capstone · Session 21</div>
+    <h1>MediSlot: clinic scheduling, from laptop to a monitored EKS cluster</h1>
+    <p class="lead">React · FastAPI · PostgreSQL · Docker · GitHub Actions · Trivy · Terraform · EKS · Helm · Argo CD · Prometheus · Grafana</p>
+    <p style="font-size:20px; margin-top:18px;"><b>Ayush Singh</b> &nbsp;·&nbsp; <span style="color:#7ee7d9">github.com/ayushsingh199/DevOps_Capstone_Project</span></p>
+  </div>
+  <div style="position:absolute; right:70px; top:150px; width:300px; height:300px; border-radius:50%; background:var(--brand); display:grid; place-items:center; font-size:170px; color:#fff; font-weight:800; box-shadow: 0 0 0 26px rgb(20 184 166 / 18%), 0 0 0 52px rgb(20 184 166 / 8%);">✚</div>
+</section>
+
+<!-- 2 The app -->
+<section class="slide" data-notes="Explain the users (front-desk staff), the main workflow (book, check in, complete) and the key business rule: no double-booking, enforced by the API with a 409.">
+  <div class="kicker">The application</div>
+  <h1>A front desk dashboard that refuses double-bookings</h1>
+  <div class="body">
+    <div class="col" style="flex:0.85">
+      <div class="row"><div class="icon">1</div><div><h2>Book</h2><p class="lead" style="font-size:16px;margin-top:2px">Patient, doctor, slot, visit type and reason, validated by Pydantic</p></div></div>
+      <div class="row"><div class="icon">2</div><div><h2>Check in → Complete</h2><p class="lead" style="font-size:16px;margin-top:2px">One click per status change; cancel and no-show are tracked</p></div></div>
+      <div class="row"><div class="icon">3</div><div><h2>No overlaps</h2><p class="lead" style="font-size:16px;margin-top:2px">An overlapping slot for the same doctor returns <code>409 Conflict</code></p></div></div>
+      <div class="row"><div class="icon">4</div><div><h2>Live KPIs</h2><p class="lead" style="font-size:16px;margin-top:2px">Visits today, upcoming, waiting room, completion rate, doctor load</p></div></div>
+    </div>
+    <div class="shot-wrap"><img class="shot" src="../../docs/screenshots/app-dashboard.png" alt="MediSlot dashboard running on EKS"></div>
+  </div>
+  <div class="footer"><span>MediSlot</span><span>2</span></div>
+</section>
+
+<!-- 3 Architecture -->
+<section class="slide" data-notes="Two flows. Request flow: NLB, Traefik, frontend or backend, Postgres. Delivery flow: push, Actions, GHCR, commit of the new tag, Argo CD pulls it. CI never holds cluster credentials.">
+  <div class="kicker">Architecture</div>
+  <h1>Two flows: requests in, releases pulled</h1>
+  <div class="body" style="gap:22px">
+    <div class="col" style="flex:0.9; gap:12px">
+      <div class="box"><b>1 · git push to main</b>Developer commit</div>
+      <div class="box"><b>2 · GitHub Actions</b>tests → build → Trivy gate → push <code>:git-sha</code> to GHCR</div>
+      <div class="box"><b>3 · GitOps commit</b>CI writes the new tag into <code>values-eks.yaml</code></div>
+      <div class="box" style="border-color:var(--brand)"><b>4 · Argo CD (in cluster)</b>pulls the change and does a rolling update</div>
+    </div>
+    <div class="zone" style="flex:1.6; display:flex; flex-direction:column; gap:12px; padding-top:22px">
+      <span class="tag">AWS ap-south-1 · VPC 10.20.0.0/16 · Terraform</span>
+      <div class="box" style="background:#fff4e5"><b>Network Load Balancer</b>public subnets in 2 AZs</div>
+      <div class="zone" style="flex:1; display:flex; flex-direction:column; gap:12px; padding-top:22px">
+        <span class="tag">EKS 1.36 · managed nodes in private subnets</span>
+        <div class="box"><b>Traefik Ingress</b><code>/</code> → frontend &nbsp; <code>/api</code> → backend</div>
+        <div style="display:flex; gap:12px">
+          <div class="box" style="flex:1"><b>frontend ×2</b>React on Nginx</div>
+          <div class="box" style="flex:1"><b>backend ×2–6</b>FastAPI + HPA</div>
+          <div class="box" style="flex:1"><b>PostgreSQL</b>StatefulSet + EBS gp3</div>
+        </div>
+        <div style="display:flex; gap:12px">
+          <div class="box" style="flex:1; background:var(--brand-soft)"><b>Prometheus + Grafana</b>ServiceMonitor scrapes <code>/metrics</code></div>
+          <div class="box" style="flex:1; background:var(--brand-soft)"><b>Argo CD</b>auto-sync, prune, self-heal</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span>MediSlot</span><span>3</span></div>
+</section>
+
+<!-- 4 Stack -->
+<section class="slide" data-notes="Run through the stack quickly. Every row maps to a rubric module.">
+  <div class="kicker">Tech stack</div>
+  <h1>One tool per job, all of it automated</h1>
+  <div class="body">
+    <table>
+      <tr><th style="width:22%">Layer</th><th>Technology</th><th style="width:30%">Why</th></tr>
+      <tr><td><b>Application</b></td><td>React 19 + Vite · FastAPI · SQLAlchemy 2 · Alembic · PostgreSQL 16</td><td>Typed API, versioned schema</td></tr>
+      <tr><td><b>Quality</b></td><td>pytest (23 tests, 97% coverage) · ruff · ESLint · Prettier</td><td>First gate in the pipeline</td></tr>
+      <tr><td><b>Containers</b></td><td>Multi-stage Dockerfiles · non-root · Docker Compose</td><td>Small, reproducible images</td></tr>
+      <tr><td><b>CI/CD</b></td><td>GitHub Actions · GHCR · SHA-pinned actions</td><td>Every image traceable to a commit</td></tr>
+      <tr><td><b>Security</b></td><td>Trivy gate + SARIF · Pod Security "restricted" · NetworkPolicy</td><td>Defence in depth</td></tr>
+      <tr><td><b>Infrastructure</b></td><td>Terraform · AWS VPC · EKS · EBS CSI (Pod Identity)</td><td>Reviewable, repeatable infra</td></tr>
+      <tr><td><b>Delivery</b></td><td>Helm chart · Traefik Ingress · HPA · Argo CD</td><td>Pull-based GitOps</td></tr>
+      <tr><td><b>Observability</b></td><td>kube-prometheus-stack · ServiceMonitor · PrometheusRule · Grafana</td><td>See traffic, latency, errors</td></tr>
+    </table>
+  </div>
+  <div class="footer"><span>MediSlot</span><span>4</span></div>
+</section>
+
+<!-- 5 Backend + DB -->
+<section class="slide" data-notes="Routers handle HTTP only, services hold the business rules, models map tables. Two migrations; they run in an initContainer under a Postgres advisory lock.">
+  <div class="kicker">Backend and database</div>
+  <h1>Clean layers, migrations that can't race</h1>
+  <div class="body">
+    <div class="col">
+      <div class="card"><h2>REST API (FastAPI)</h2>
+        <table style="font-size:14px">
+          <tr><td><code>GET / POST</code></td><td>/api/appointments</td></tr>
+          <tr><td><code>GET / PUT / DELETE</code></td><td>/api/appointments/{id}</td></tr>
+          <tr><td><code>GET</code></td><td>/api/appointments/stats</td></tr>
+          <tr><td><code>GET / POST / DELETE</code></td><td>/api/doctors[/{id}]</td></tr>
+          <tr><td><code>GET</code></td><td>/health · /ready · /metrics · /api/info</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card"><h2>Layering</h2><p><code>routers/</code> → HTTP &nbsp;·&nbsp; <code>services/</code> → rules &nbsp;·&nbsp; <code>models.py</code> → tables &nbsp;·&nbsp; <code>schemas.py</code> → contract</p></div>
+      <div class="card"><h2>Alembic</h2><p><code>0001</code> creates <b>doctors</b> + <b>appointments</b> with check constraints and indexes; <code>0002</code> seeds the doctor roster. Runs in an initContainer under <code>pg_advisory_lock</code>.</p></div>
+      <div class="card"><h2>Probes that mean something</h2><p><code>/health</code> = process alive (liveness) · <code>/ready</code> = database reachable (readiness, 503 otherwise)</p></div>
+    </div>
+  </div>
+  <div class="footer"><span>MediSlot</span><span>5</span></div>
+</section>
+
+<!-- 6 Testing -->
+<section class="slide" data-notes="Each test gets its own in-memory SQLite DB via dependency override, so production Postgres is never touched. CI also runs the migrations against a real Postgres container.">
+  <div class="kicker">Testing and code quality</div>
+  <h1>Bad code never reaches the registry</h1>
+  <div class="body">
+    <div class="col" style="flex:0.8; gap:26px; justify-content:center">
+      <div><div class="num">23</div><div class="stat-label">pytest cases across health, doctors, appointments, stats, metrics</div></div>
+      <div><div class="num">97<small>%</small></div><div class="stat-label">line coverage of the backend</div></div>
+      <div><div class="num">0</div><div class="stat-label">tests that touch the production database</div></div>
+    </div>
+    <div class="col">
+      <div class="card"><h2>What the suite proves</h2><ul>
+        <li>CRUD on every endpoint group, filters and search</li>
+        <li><b>409</b> on overlapping bookings, back-to-back slots allowed, cancelled slots rebookable</li>
+        <li><b>422</b> validation and <b>404</b> paths</li>
+        <li>Alembic upgrade → downgrade round-trip</li></ul></div>
+      <div class="card"><h2>Isolation</h2><p><code>conftest.py</code> overrides <code>get_db</code> with a fresh in-memory SQLite per test. In CI, migrations also run against a <b>real PostgreSQL 16</b> service container.</p></div>
+      <div class="card"><h2>Static checks</h2><p>ruff (lint + format) · ESLint · Prettier. Any failure stops the pipeline.</p></div>
+    </div>
+  </div>
+  <div class="footer"><span>MediSlot</span><span>6</span></div>
+</section>
+
+<!-- 7 Docker -->
+<section class="slide" data-notes="Both builds are multi-stage, so build tools never ship. Both run as non-root; the frontend uses nginx-unprivileged on port 8080. Compose starts all three services with health-gated ordering.">
+  <div class="kicker">Docker</div>
+  <h1>Multi-stage, non-root, one command locally</h1>
+  <div class="body">
+    <div class="col">
+      <div class="card"><h2>backend/Dockerfile</h2><p><code>python:3.12-slim</code> builds wheels → slim runtime with OS packages upgraded and pip removed → runs as <b>UID 10001</b> with a HEALTHCHECK on <code>/health</code></p></div>
+      <div class="card"><h2>frontend/Dockerfile</h2><p><code>node:22-alpine</code> runs <code>npm ci && vite build</code> → <code>nginx-unprivileged</code> serves <code>dist/</code> as <b>UID 101</b> on port 8080. No Node in the final image.</p></div>
+      <div class="card"><h2>docker-compose.yml</h2><p><code>postgres</code> (healthy) → <code>backend</code> (migrate + seed, healthy) → <code>frontend</code> on <b>localhost:3000</b></p></div>
+    </div>
+    <div class="col" style="flex:0.75; justify-content:center; gap:18px">
+      <div class="card" style="background:var(--night); color:#fff; font-family:Menlo,monospace; font-size:14px; line-height:1.7">
+        $ docker compose up --build<br>
+        <span style="color:#7ee7d9">✔ postgres</span> Healthy<br>
+        <span style="color:#7ee7d9">✔ backend</span> &nbsp;Healthy<br>
+        <span style="color:#7ee7d9">✔ frontend</span> Started → :3000<br><br>
+        $ docker run --entrypoint id medislot-backend<br>uid=10001(app) gid=10001(app)<br>
+        $ docker run --entrypoint id medislot-frontend<br>uid=101(nginx) gid=101(nginx)
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span>MediSlot</span><span>7</span></div>
+</section>
+
+<!-- 8 CI/CD -->
+<section class="slide" data-notes="Walk the stages left to right. Emphasise SHA tags (never latest), push only after the scan, and actions pinned to commit SHAs because tags can be moved.">
+  <div class="kicker">CI/CD · GitHub Actions</div>
+  <h1>Every push to main: test, build, scan, ship, deploy</h1>
+  <div class="body" style="flex-direction:column; gap:24px">
+    <div class="flow">
+      <div class="stage"><span class="pill">gate 1</span><b>Backend</b><span>ruff · pytest + coverage · Alembic on real Postgres</span></div>
+      <div class="arrow">→</div>
+      <div class="stage"><span class="pill">gate 2</span><b>Frontend</b><span>npm ci · ESLint · vite build</span></div>
+      <div class="arrow">→</div>
+      <div class="stage"><b>Build</b><span>Buildx, GHA layer cache, matrix: backend + frontend</span></div>
+      <div class="arrow">→</div>
+      <div class="stage gate"><span class="pill amber">gate 3</span><b>Trivy</b><span>fail on fixable HIGH/CRITICAL · SARIF → Security tab</span></div>
+      <div class="arrow">→</div>
+      <div class="stage ship"><b>Push</b><span><code>ghcr.io/…/medislot-*:&lt;git-sha&gt;</code></span></div>
+      <div class="arrow">→</div>
+      <div class="stage ship"><b>Deploy</b><span>bump tags in <code>values-eks.yaml</code> → Argo CD</span></div>
+    </div>
+    <div style="display:flex; gap:24px">
+      <div class="card" style="flex:1"><h2>Traceable</h2><p>Tags are the full commit SHA, never <code>latest</code>. The running SHA is shown in the app's sidebar.</p></div>
+      <div class="card" style="flex:1"><h2>Safe by default</h2><p>Pull requests build and scan but never publish. Only scanned images reach GHCR.</p></div>
+      <div class="card" style="flex:1"><h2>Supply chain</h2><p>All third-party actions are pinned to commit SHAs; a tag can be re-pointed, a SHA can't.</p></div>
+    </div>
+  </div>
+  <div class="footer"><span>MediSlot</span><span>8</span></div>
+</section>
+
+<!-- 9 Security -->
+<section class="slide" data-notes="Explain the CVE: util-linux packages in Debian, HIGH, no fix released. ignore-unfixed avoids blocking on things nobody can fix; they stay visible in the Security tab, and the runtime hardening limits exposure.">
+  <div class="kicker">DevSecOps</div>
+  <h1>Trivy gate: what it found and why it passes</h1>
+  <div class="body">
+    <div class="col">
+      <div class="card"><h2>What Trivy scanned</h2><p>OS packages (Debian 13 backend, Alpine 3.23 frontend) and language dependencies (Python wheels) inside both images, against public vulnerability databases.</p></div>
+      <div class="card"><h2>Result</h2><p><b>0 fixable HIGH/CRITICAL</b> in both images, so the gate passes and the images are pushed.</p></div>
+      <div class="card" style="background:#fff4e5"><h2>One CVE explained: CVE-2026-76642</h2><p>HIGH, in Debian's <code>util-linux</code> (<code>bsdutils</code>, <code>libblkid1</code>), status <i>affected, no fix</i>. It's tolerated via <code>ignore-unfixed</code>: the API never runs these tools, and runs non-root, read-only, with no Linux capabilities. It's tracked in the Security tab and picked up by <code>apt-get upgrade</code> once Debian ships a fix.</p></div>
+    </div>
+    <div class="col" style="flex:0.8">
+      <div class="card"><h2>Other layers</h2><ul>
+        <li>Non-root images, multi-stage builds</li>
+        <li>Namespace enforces Pod Security <b>restricted</b></li>
+        <li><code>readOnlyRootFilesystem</code>, <code>drop: [ALL]</code>, seccomp</li>
+        <li>NetworkPolicy: only the backend reaches Postgres</li>
+        <li>Secrets generated in-cluster, never in Git</li>
+        <li>Nodes in private subnets, EBS encrypted</li>
+        <li>CI holds no cloud credentials (GitOps)</li></ul></div>
+    </div>
+  </div>
+  <div class="footer"><span>MediSlot</span><span>9</span></div>
+</section>
+
+<!-- 10 Terraform -->
+<section class="slide" data-notes="Show the module layout and the numbers: 60 resources, 2 public + 2 private subnets, EKS 1.36, node group of 2 t3.large in private subnets. Credentials come from the AWS CLI profile.">
+  <div class="kicker">Terraform · AWS</div>
+  <h1>60 resources, one command, zero clicks</h1>
+  <div class="body">
+    <div class="col" style="flex:0.75; gap:22px; justify-content:center">
+      <div><div class="num">60</div><div class="stat-label">resources in <code>terraform plan</code></div></div>
+      <div><div class="num">4</div><div class="stat-label">subnets: 2 public (NLB, NAT) + 2 private (nodes)</div></div>
+      <div><div class="num">1.36</div><div class="stat-label">EKS version · managed node group 2 × t3.large</div></div>
+    </div>
+    <div class="col">
+      <div class="card"><h2>vpc.tf</h2><p>terraform-aws-modules/vpc: <code>10.20.0.0/16</code>, 2 AZs, single NAT gateway, subnet tags for internet-facing and internal load balancers</p></div>
+      <div class="card"><h2>eks.tf + iam.tf</h2><p>terraform-aws-modules/eks v21: public + private endpoint, creator admin via access entry; add-ons vpc-cni, coredns, kube-proxy, pod-identity, <b>EBS CSI</b> (Pod Identity role), <b>metrics-server</b></p></div>
+      <div class="card"><h2>Safe by design</h2><p>Only <code>terraform.tfvars.example</code> is committed; state and tfvars are git-ignored. <code>scripts/teardown.sh</code> removes the NLB and EBS volumes first, then runs <code>terraform destroy</code>.</p></div>
+    </div>
+  </div>
+  <div class="footer"><span>MediSlot</span><span>10</span></div>
+</section>
+
+<!-- 11 Kubernetes + Helm -->
+<section class="slide" data-notes="Walk through what the chart creates. Mention the initContainers, the probes, HPA, PDBs and the NetworkPolicy. Ingress needs a controller: Traefik, since ingress-nginx was retired in March 2026.">
+  <div class="kicker">Kubernetes · Helm</div>
+  <h1>One chart, every environment</h1>
+  <div class="body">
+    <div class="col">
+      <table>
+        <tr><th>Resource</th><th>Detail</th></tr>
+        <tr><td><b>Deployment</b> backend</td><td>2–6 replicas · initContainers <code>wait-for-db</code> + <code>migrate</code></td></tr>
+        <tr><td><b>Deployment</b> frontend</td><td>2 replicas · read-only Nginx</td></tr>
+        <tr><td><b>StatefulSet</b> postgres</td><td>2 Gi encrypted gp3 volume</td></tr>
+        <tr><td><b>Service</b> ×3</td><td>ClusterIP: backend :8000, frontend :80, postgres :5432</td></tr>
+        <tr><td><b>Ingress</b></td><td><code>/api</code> → backend · <code>/</code> → frontend</td></tr>
+        <tr><td><b>HPA · PDB · NetworkPolicy</b></td><td>CPU 60% · minAvailable 1 · DB isolation</td></tr>
+        <tr><td><b>ServiceMonitor · PrometheusRule</b></td><td>scrape config + 3 alerts</td></tr>
+      </table>
+    </div>
+    <div class="col" style="flex:0.7">
+      <div class="card"><h2>Values overlays</h2><p><code>values.yaml</code> defaults · <code>values-dev.yaml</code> local k3s · <code>values-eks.yaml</code> GHCR images, tags owned by CI</p></div>
+      <div class="card"><h2>Ingress controller</h2><p>An Ingress is only configuration. <b>Traefik</b> implements it (ingress-nginx was retired in March 2026); on EKS it sits behind an AWS NLB.</p></div>
+      <div class="card"><h2>Zero-downtime rollouts</h2><p><code>maxUnavailable: 0</code> + readiness on <code>/ready</code></p></div>
+    </div>
+  </div>
+  <div class="footer"><span>MediSlot</span><span>11</span></div>
+</section>
+
+<!-- 12 GitOps -->
+<section class="slide" data-notes="Show the Argo CD app: Synced and Healthy. Explain that a release is a Git commit, so rollback is a git revert, and self-heal undoes manual drift.">
+  <div class="kicker">GitOps · Argo CD</div>
+  <h1>A release is a Git commit</h1>
+  <div class="body">
+    <div class="col" style="flex:0.8">
+      <div class="row"><div class="icon">1</div><div><h2>CI commits the new tag</h2><p>"deploy: release medislot &lt;sha&gt;" in <code>values-eks.yaml</code></p></div></div>
+      <div class="row"><div class="icon">2</div><div><h2>Argo CD detects the diff</h2><p>polls <code>main</code> every 60 s, renders the Helm chart</p></div></div>
+      <div class="row"><div class="icon">3</div><div><h2>Rolling update</h2><p>automated sync with prune and self-heal</p></div></div>
+      <div class="row"><div class="icon">↺</div><div><h2>Rollback = git revert</h2><p>manual <code>kubectl edit</code> drift is reverted automatically</p></div></div>
+    </div>
+    <div class="shot-wrap"><img class="shot" src="../../docs/screenshots/argocd-app.png" alt="Argo CD medislot application synced and healthy"></div>
+  </div>
+  <div class="footer"><span>MediSlot</span><span>12</span></div>
+</section>
+
+<!-- 13 Observability -->
+<section class="slide" data-notes="Prometheus scrapes both backend pods every 15 s via the ServiceMonitor. Grafana shows traffic, latency percentiles, error rate, business counters and HPA replicas.">
+  <div class="kicker">Observability · Prometheus + Grafana</div>
+  <h1>Traffic, latency, errors and bookings, live</h1>
+  <div class="body">
+    <div class="col" style="flex:0.62">
+      <div class="card"><h2>Metrics</h2><p><code>http_requests_total</code>, <code>http_request_duration_seconds</code> plus domain counters <code>medislot_appointments_booked_total</code>, <code>medislot_booking_conflicts_total</code></p></div>
+      <div class="card"><h2>Scraping</h2><p>ServiceMonitor → every backend pod's <code>/metrics</code> every 15 s, all targets <b>UP</b></p></div>
+      <div class="card"><h2>Alerts</h2><p>BackendDown · HighErrorRate &gt; 5% · p95 &gt; 500 ms</p></div>
+    </div>
+    <div class="shot-wrap"><img class="shot" src="../../docs/screenshots/grafana-dashboard.png" alt="Grafana MediSlot service overview dashboard"></div>
+  </div>
+  <div class="footer"><span>MediSlot</span><span>13</span></div>
+</section>
+
+<!-- 14 Challenges -->
+<section class="slide" data-notes="Pick two or three of these and tell them as short stories: what broke, how you diagnosed it, what you changed.">
+  <div class="kicker">Lessons learned</div>
+  <h1>What broke, and what I changed</h1>
+  <div class="body" style="display:grid; grid-template-columns: 1fr 1fr; gap:18px">
+    <div class="card"><h2>An SCP beats AdministratorAccess</h2><p>The first AWS account sat in an Organization whose service control policy denied EC2 and EKS. No IAM change can override that, so I moved to a standalone account.</p></div>
+    <div class="card"><h2>New-account vCPU quota</h2><p>5 vCPUs On-Demand, so 3 × t3.medium (6 vCPU) wouldn't launch. Resized to 2 × t3.large: 4 vCPU and more pods per node.</p></div>
+    <div class="card"><h2>ingress-nginx retired</h2><p>The community controller was retired in March 2026, so I chose Traefik while keeping a standard <code>networking.k8s.io/v1</code> Ingress.</p></div>
+    <div class="card"><h2>Helm 4 wait semantics</h2><p>The new "watcher" wait hung on a CRD-heavy chart; the bootstrap script now picks the right wait strategy for Helm 3 or 4.</p></div>
+    <div class="card"><h2>Teardown order matters</h2><p>NLBs and EBS volumes are created by Kubernetes, not Terraform. Deleting them first keeps <code>terraform destroy</code> clean.</p></div>
+    <div class="card"><h2>Migration races</h2><p>Two replicas starting together could both migrate. A Postgres advisory lock makes them take turns.</p></div>
+  </div>
+  <div class="footer"><span>MediSlot</span><span>14</span></div>
+</section>
+
+<!-- 15 Close -->
+<section class="slide dark" data-notes="Switch to the live demo: push a change, watch the pipeline, see Argo CD sync, refresh the app and point at the new build SHA, then show Prometheus targets and Grafana.">
+  <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:26px">
+    <div class="kicker">Live demo</div>
+    <p class="big-quote">git push → tests → Trivy → GHCR → Argo CD → EKS → Grafana</p>
+    <div style="display:flex; gap:18px; margin-top:10px">
+      <div class="card" style="background:var(--night-2); flex:1"><h2 style="color:#fff">Change</h2><p style="color:#b8d3d1">Edit the dashboard subtitle, commit, push</p></div>
+      <div class="card" style="background:var(--night-2); flex:1"><h2 style="color:#fff">Watch</h2><p style="color:#b8d3d1">Pipeline goes green; Argo CD syncs the new SHA</p></div>
+      <div class="card" style="background:var(--night-2); flex:1"><h2 style="color:#fff">Verify</h2><p style="color:#b8d3d1">New build SHA in the app, targets UP, live Grafana panels</p></div>
+    </div>
+    <p style="font-size:20px; margin-top:24px; color:#7ee7d9">Thank you · github.com/ayushsingh199/DevOps_Capstone_Project</p>
+  </div>
+</section>
+
+</body>
+</html>

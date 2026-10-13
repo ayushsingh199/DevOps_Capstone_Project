@@ -1,0 +1,61 @@
+
+[1;36m==> Cluster: arn:aws:eks:ap-south-1:980921726643:cluster/medislot-dev-eks[0m
+NAME                                          STATUS   ROLES    AGE    VERSION               INTERNAL-IP    EXTERNAL-IP   OS-IMAGE                        KERNEL-VERSION                            CONTAINER-RUNTIME
+ip-10-20-10-220.ap-south-1.compute.internal   Ready    <none>   2m2s   v1.36.4-eks-3b4a6ca   10.20.10.220   <none>        Amazon Linux 2023.12.20260930   6.18.51-120.163.amzn2023.x86_64 (amd64)   containerd://2.2.7+unknown
+ip-10-20-11-239.ap-south-1.compute.internal   Ready    <none>   2m3s   v1.36.4-eks-3b4a6ca   10.20.11.239   <none>        Amazon Linux 2023.12.20260930   6.18.51-120.163.amzn2023.x86_64 (amd64)   containerd://2.2.7+unknown
+
+[1;36m==> Helm repositories[0m
+
+[1;36m==> Namespaces and storage[0m
+namespace/medislot created
+namespace/monitoring created
+storageclass.storage.k8s.io/gp3 created
+storageclass.storage.k8s.io/gp2 annotated
+
+[1;36m==> Secrets (generated once, kept only in the cluster)[0m
+secret/medislot-db created
+secret/grafana-admin created
+
+[1;36m==> Ingress controller (Traefik)[0m
+Release "traefik" does not exist. Installing it now.
+NAME: traefik
+LAST DEPLOYED: Tue Oct 13 14:01:31 2026
+NAMESPACE: traefik
+STATUS: deployed
+REVISION: 1
+DESCRIPTION: Install complete
+TEST SUITE: None
+NOTES:
+traefik with docker.io/traefik:v3.7.14 has been deployed successfully on traefik namespace!
+
+[1;36m==> Monitoring (Prometheus + Grafana)[0m
+Release "monitoring" does not exist. Installing it now.
+NAME: monitoring
+LAST DEPLOYED: Tue Oct 13 14:03:16 2026
+NAMESPACE: monitoring
+STATUS: deployed
+REVISION: 1
+DESCRIPTION: Install complete
+NOTES:
+kube-prometheus-stack has been installed. Check its status by running:
+  kubectl --namespace monitoring get pods -l "release=monitoring"
+
+Get Grafana 'admin' user password by running:
+
+  kubectl --namespace monitoring get secrets monitoring-grafana -o jsonpath="{.data.admin-password}" | base64 -d ; echo
+
+Access Grafana local instance:
+
+  export POD_NAME=$(kubectl --namespace monitoring get pod -l "app.kubernetes.io/name=grafana,app.kubernetes.io/instance=monitoring" -oname)
+  kubectl --namespace monitoring port-forward $POD_NAME 3000
+
+Get your grafana admin user password by running:
+
+  kubectl get secret --namespace monitoring -l app.kubernetes.io/component=admin-secret -o jsonpath="{.items[0].data.admin-password}" | base64 --decode ; echo
+
+
+Visit https://github.com/prometheus-operator/kube-prometheus for instructions on how to create & configure Alertmanager and Prometheus instances using the Operator.
+
+[1;36m==> MediSlot application (Helm)[0m
+Release "medislot" does not exist. Installing it now.
+Error: context deadline exceeded
