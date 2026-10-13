@@ -454,6 +454,7 @@ Raw command output is in [`docs/evidence/`](docs/evidence/); images are in [`doc
 | GHCR package with commit-SHA tags only (M5) | [ghcr](docs/screenshots/ghcr-backend-package.png) |
 | Trivy gate output from the pipeline (M6) | [trivy](docs/screenshots/trivy-ci.png) |
 | `terraform plan` (60 to add) and `apply` (M7) | [plan](docs/screenshots/terraform-plan-summary.png) · [apply](docs/screenshots/terraform-apply-summary.png) |
+| AWS Console (ap-south-1): `medislot-dev-vpc` with 4 subnets, EKS `medislot-dev-eks` Active on 1.36 (M7) | [VPC list](docs/screenshots/aws-vpc-list.png) · ![vpc](docs/screenshots/aws-vpc-details.png) · ![eks](docs/screenshots/aws-eks-cluster.png) |
 | `kubectl get pods/svc/ingress/hpa`, `helm list`, Argo CD app (M8) | ![k8s](docs/screenshots/k8s-status.png) |
 | `curl` of the backend `/metrics` (M9) | [metrics](docs/screenshots/metrics.png) |
 | Prometheus targets: `serviceMonitor/medislot/medislot-backend` 2/2 UP (M9) | ![targets](docs/screenshots/prometheus-targets.png) |
