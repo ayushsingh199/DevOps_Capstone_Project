@@ -47,7 +47,7 @@ variable "single_nat_gateway" {
 variable "kubernetes_version" {
   description = "EKS control plane Kubernetes version."
   type        = string
-  default     = "1.34"
+  default     = "1.36"
 }
 
 variable "endpoint_public_access_cidrs" {
@@ -57,9 +57,9 @@ variable "endpoint_public_access_cidrs" {
 }
 
 variable "node_instance_types" {
-  description = "EC2 instance types for the managed worker node group."
+  description = "EC2 instance types for the managed worker node group (t3.large = 2 vCPU / 8 GiB / 35 pods)."
   type        = list(string)
-  default     = ["t3.medium"]
+  default     = ["t3.large"]
 }
 
 variable "node_capacity_type" {
@@ -76,7 +76,7 @@ variable "node_capacity_type" {
 variable "node_desired_size" {
   description = "Desired number of worker nodes."
   type        = number
-  default     = 3
+  default     = 2
 }
 
 variable "node_min_size" {
@@ -88,5 +88,5 @@ variable "node_min_size" {
 variable "node_max_size" {
   description = "Maximum number of worker nodes."
   type        = number
-  default     = 4
+  default     = 3
 }
