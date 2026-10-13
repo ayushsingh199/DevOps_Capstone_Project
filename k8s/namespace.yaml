@@ -1,0 +1,12 @@
+# Application namespace. Pod Security Admission enforces the "restricted" profile:
+# every pod must run as non-root, drop all capabilities and use the RuntimeDefault seccomp profile.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: medislot
+  labels:
+    app.kubernetes.io/part-of: medislot
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/enforce-version: latest
+    pod-security.kubernetes.io/warn: restricted
+    pod-security.kubernetes.io/audit: restricted
