@@ -34,8 +34,8 @@
   .stat-label { font-size: 15px; color: var(--muted); margin-top: 4px; }
   .icon { width: 44px; height: 44px; border-radius: 50%; background: var(--brand); color: #fff; display: grid; place-items: center; font-size: 22px; font-weight: 700; flex-shrink: 0; }
   .row { display: flex; gap: 14px; align-items: flex-start; }
-  .shot { border-radius: 14px; box-shadow: 0 10px 30px rgb(0 0 0 / 18%); width: 100%; height: 100%; object-fit: cover; object-position: top left; border: 1px solid var(--line); }
-  .shot-wrap { flex: 1.35; min-height: 0; display: flex; }
+  .shot { border-radius: 14px; box-shadow: 0 10px 30px rgb(0 0 0 / 18%); max-width: 100%; max-height: 100%; width: auto; height: auto; border: 1px solid var(--line); }
+  .shot-wrap { flex: 1.35; min-height: 0; min-width: 0; display: flex; align-items: flex-start; justify-content: center; }
   .footer { position: absolute; bottom: 22px; left: 64px; right: 64px; display: flex; justify-content: space-between; font-size: 13px; color: #8aa0a5; }
   .dark .footer { color: #6f9690; }
   code { font-family: Menlo, monospace; font-size: 0.88em; background: var(--brand-soft); color: var(--brand); padding: 1px 6px; border-radius: 6px; }
@@ -51,6 +51,7 @@
   .arrow { align-self: center; font-size: 26px; color: var(--brand); font-weight: 700; }
   .gate { background: #fff4e5; } .ship { background: var(--brand-soft); }
   .pill { display: inline-block; font-size: 12px; font-weight: 700; padding: 3px 9px; border-radius: 999px; background: var(--brand); color: #fff; align-self: flex-start; }
+  .stage .pill { color: #fff; font-size: 12px; line-height: 1.3; }
   .pill.amber { background: var(--amber); } .pill.rose { background: var(--rose); }
   /* architecture boxes */
   .box { border: 2px solid var(--line); border-radius: 14px; padding: 12px 14px; font-size: 15px; background: #fff; }
@@ -94,7 +95,7 @@
 <section class="slide" data-notes="Two flows. Request flow: NLB, Traefik, frontend or backend, Postgres. Delivery flow: push, Actions, GHCR, commit of the new tag, Argo CD pulls it. CI never holds cluster credentials.">
   <div class="kicker">Architecture</div>
   <h1>Two flows: requests in, releases pulled</h1>
-  <div class="body" style="gap:22px">
+  <div class="body" style="gap:22px; align-items:flex-start">
     <div class="col" style="flex:0.9; gap:12px">
       <div class="box"><b>1 · git push to main</b>Developer commit</div>
       <div class="box"><b>2 · GitHub Actions</b>tests → build → Trivy gate → push <code>:git-sha</code> to GHCR</div>
@@ -104,7 +105,7 @@
     <div class="zone" style="flex:1.6; display:flex; flex-direction:column; gap:12px; padding-top:22px">
       <span class="tag">AWS ap-south-1 · VPC 10.20.0.0/16 · Terraform</span>
       <div class="box" style="background:#fff4e5"><b>Network Load Balancer</b>public subnets in 2 AZs</div>
-      <div class="zone" style="flex:1; display:flex; flex-direction:column; gap:12px; padding-top:22px">
+      <div class="zone" style="display:flex; flex-direction:column; gap:12px; padding-top:22px">
         <span class="tag">EKS 1.36 · managed nodes in private subnets</span>
         <div class="box"><b>Traefik Ingress</b><code>/</code> → frontend &nbsp; <code>/api</code> → backend</div>
         <div style="display:flex; gap:12px">
