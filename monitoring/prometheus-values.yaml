@@ -1,0 +1,53 @@
+# kube-prometheus-stack — Prometheus side.
+# Install:  helm upgrade --install monitoring prometheus-community/kube-prometheus-stack \
+#             -n monitoring -f monitoring/prometheus-values.yaml -f monitoring/grafana-values.yaml
+
+alertmanager:
+  enabled: false # alerts are visible on the Prometheus "Alerts" page; no receivers configured
+
+prometheus:
+  prometheusSpec:
+    # Discover ServiceMonitors / rules from ANY namespace and ANY Helm release,
+    # so the medislot chart's ServiceMonitor is picked up without extra labels.
+    serviceMonitorSelectorNilUsesHelmValues: false
+    podMonitorSelectorNilUsesHelmValues: false
+    ruleSelectorNilUsesHelmValues: false
+    scrapeInterval: 15s
+    evaluationInterval: 15s
+    retention: 3d
+    resources:
+      requests: { cpu: 100m, memory: 400Mi }
+      limits: { memory: 1Gi }
+
+# Managed control planes (EKS) and k3s don't expose these components for scraping;
+# disabling them keeps the Targets page free of permanently-DOWN entries.
+kubeEtcd:
+  enabled: false
+kubeControllerManager:
+  enabled: false
+kubeScheduler:
+  enabled: false
+kubeProxy:
+  enabled: false
+defaultRules:
+  rules:
+    etcd: false
+    kubeControllerManager: false
+    kubeSchedulerAlerting: false
+    kubeSchedulerRecording: false
+    kubeProxy: false
+
+prometheusOperator:
+  resources:
+    requests: { cpu: 50m, memory: 64Mi }
+    limits: { memory: 256Mi }
+
+kube-state-metrics:
+  resources:
+    requests: { cpu: 20m, memory: 64Mi }
+    limits: { memory: 192Mi }
+
+prometheus-node-exporter:
+  resources:
+    requests: { cpu: 20m, memory: 32Mi }
+    limits: { memory: 64Mi }
