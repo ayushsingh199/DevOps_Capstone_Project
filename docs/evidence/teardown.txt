@@ -1,0 +1,2047 @@
+$ ./scripts/teardown.sh
+
+==> Removing Argo CD application (so it cannot re-create resources)
+application.argoproj.io "medislot" deleted from argocd namespace
+
+==> Deleting app namespace (PVC -> EBS volume is deleted with it)
+namespace "medislot" deleted
+
+==> Uninstalling Traefik (deletes the AWS Network Load Balancer)
+release "traefik" uninstalled
+
+==> Waiting for LoadBalancer services to disappear
+These resources were kept due to the resource policy:
+[CustomResourceDefinition] applications.argoproj.io
+[CustomResourceDefinition] applicationsets.argoproj.io
+[CustomResourceDefinition] appprojects.argoproj.io
+
+release "argocd" uninstalled
+release "monitoring" uninstalled
+
+==> terraform destroy
+module.eks.data.aws_caller_identity.current[0]: Reading...
+data.aws_iam_policy_document.pod_identity_trust: Reading...
+module.eks.module.eks_managed_node_group["general"].data.aws_iam_policy_document.assume_role_policy[0]: Reading...
+data.aws_availability_zones.available: Reading...
+module.eks.data.aws_partition.current[0]: Reading...
+module.eks.module.kms.data.aws_caller_identity.current[0]: Reading...
+module.vpc.aws_vpc.this[0]: Refreshing state... [id=vpc-07760798354aad45f]
+module.eks.aws_cloudwatch_log_group.this[0]: Refreshing state... [id=/aws/eks/medislot-dev-eks/cluster]
+module.eks.data.aws_iam_policy_document.assume_role_policy[0]: Reading...
+module.eks.module.kms.data.aws_partition.current[0]: Reading...
+module.eks.data.aws_partition.current[0]: Read complete after 0s [id=aws]
+module.eks.module.kms.data.aws_partition.current[0]: Read complete after 0s [id=aws]
+module.eks.data.aws_iam_policy_document.assume_role_policy[0]: Read complete after 0s [id=2830595799]
+module.eks.module.eks_managed_node_group["general"].data.aws_iam_policy_document.assume_role_policy[0]: Read complete after 0s [id=2560088296]
+data.aws_iam_policy_document.pod_identity_trust: Read complete after 0s [id=819195744]
+module.eks.module.eks_managed_node_group["general"].aws_iam_role.this[0]: Refreshing state... [id=medislot-dev-general-eks-node-group-36d14f6c8d568eb3d5ebb39669]
+module.eks.aws_iam_role.this[0]: Refreshing state... [id=medislot-dev-eks-cluster-6db5506ae4fcf2cf1b4466e358]
+aws_iam_role.ebs_csi: Refreshing state... [id=medislot-dev-ebs-csi]
+module.eks.data.aws_caller_identity.current[0]: Read complete after 0s [id=980921726643]
+module.eks.data.aws_iam_session_context.current[0]: Reading...
+module.eks.data.aws_iam_session_context.current[0]: Read complete after 0s [id=arn:aws:iam::980921726643:user/ayush_cli]
+module.eks.module.kms.data.aws_caller_identity.current[0]: Read complete after 0s [id=980921726643]
+data.aws_availability_zones.available: Read complete after 1s [id=ap-south-1]
+module.vpc.aws_default_route_table.default[0]: Refreshing state... [id=rtb-0dcb5230d22f165dc]
+module.vpc.aws_default_network_acl.this[0]: Refreshing state... [id=acl-0eacaedc11172f5ab]
+module.vpc.aws_internet_gateway.this[0]: Refreshing state... [id=igw-08966ae76bda31ee1]
+module.vpc.aws_subnet.public[0]: Refreshing state... [id=subnet-0e023e0a50d469c3d]
+module.vpc.aws_default_security_group.this[0]: Refreshing state... [id=sg-0d4f2fb013c9a1a36]
+module.vpc.aws_route_table.private[0]: Refreshing state... [id=rtb-04ab2dcb87c9733c8]
+module.vpc.aws_subnet.public[1]: Refreshing state... [id=subnet-079e81876e320c6a0]
+module.vpc.aws_subnet.private[1]: Refreshing state... [id=subnet-0c920e0ba68314b56]
+module.vpc.aws_subnet.private[0]: Refreshing state... [id=subnet-04ad03fe64e57eaa0]
+module.vpc.aws_route_table.public[0]: Refreshing state... [id=rtb-0bfa9e1df73da1c31]
+module.eks.aws_security_group.node[0]: Refreshing state... [id=sg-09efa3097517225d2]
+module.eks.aws_security_group.cluster[0]: Refreshing state... [id=sg-00e5ff68c573130e2]
+module.vpc.aws_route.public_internet_gateway[0]: Refreshing state... [id=r-rtb-0bfa9e1df73da1c311080289494]
+module.vpc.aws_eip.nat[0]: Refreshing state... [id=eipalloc-07a3b9ac4ec02a2ab]
+module.vpc.aws_route_table_association.private[1]: Refreshing state... [id=rtbassoc-0fcac3d2519d08e37]
+module.vpc.aws_route_table_association.private[0]: Refreshing state... [id=rtbassoc-0adc1fd7aaec3d28a]
+module.vpc.aws_route_table_association.public[1]: Refreshing state... [id=rtbassoc-0df0b857a6f6cecc4]
+module.vpc.aws_route_table_association.public[0]: Refreshing state... [id=rtbassoc-0c15d31f638ce4c4c]
+module.eks.module.eks_managed_node_group["general"].aws_iam_role_policy_attachment.this["AmazonEKS_CNI_Policy"]: Refreshing state... [id=medislot-dev-general-eks-node-group-36d14f6c8d568eb3d5ebb39669/arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy]
+module.eks.module.eks_managed_node_group["general"].aws_iam_role_policy_attachment.this["AmazonEKSWorkerNodePolicy"]: Refreshing state... [id=medislot-dev-general-eks-node-group-36d14f6c8d568eb3d5ebb39669/arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy]
+module.eks.module.eks_managed_node_group["general"].aws_iam_role_policy_attachment.this["AmazonEC2ContainerRegistryReadOnly"]: Refreshing state... [id=medislot-dev-general-eks-node-group-36d14f6c8d568eb3d5ebb39669/arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly]
+aws_iam_role_policy_attachment.ebs_csi: Refreshing state... [id=medislot-dev-ebs-csi/arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy]
+module.eks.aws_security_group_rule.node["ingress_cluster_4443_webhook"]: Refreshing state... [id=sgrule-3256060258]
+module.eks.aws_security_group_rule.node["ingress_cluster_kubelet"]: Refreshing state... [id=sgrule-2624202738]
+module.eks.aws_security_group_rule.node["ingress_cluster_9443_webhook"]: Refreshing state... [id=sgrule-2091704606]
+module.eks.aws_security_group_rule.node["ingress_cluster_6443_webhook"]: Refreshing state... [id=sgrule-189918964]
+module.eks.aws_security_group_rule.node["ingress_self_coredns_tcp"]: Refreshing state... [id=sgrule-2262471200]
+module.eks.aws_security_group_rule.node["ingress_nodes_ephemeral"]: Refreshing state... [id=sgrule-228932949]
+module.eks.aws_security_group_rule.node["egress_all"]: Refreshing state... [id=sgrule-2288096696]
+module.eks.aws_security_group_rule.node["ingress_self_coredns_udp"]: Refreshing state... [id=sgrule-579154383]
+module.eks.aws_security_group_rule.node["ingress_cluster_443"]: Refreshing state... [id=sgrule-3217215123]
+module.eks.aws_security_group_rule.node["ingress_cluster_10251_webhook"]: Refreshing state... [id=sgrule-2820896649]
+module.eks.aws_security_group_rule.node["ingress_cluster_8443_webhook"]: Refreshing state... [id=sgrule-403559125]
+module.eks.aws_iam_role_policy_attachment.this["AmazonEKSClusterPolicy"]: Refreshing state... [id=medislot-dev-eks-cluster-6db5506ae4fcf2cf1b4466e358/arn:aws:iam::aws:policy/AmazonEKSClusterPolicy]
+module.eks.aws_security_group_rule.cluster["ingress_nodes_443"]: Refreshing state... [id=sgrule-2530693658]
+module.vpc.aws_nat_gateway.this[0]: Refreshing state... [id=nat-0ac58f2390339aaf1]
+module.eks.module.kms.data.aws_iam_policy_document.this[0]: Reading...
+module.eks.module.kms.data.aws_iam_policy_document.this[0]: Read complete after 0s [id=2025611849]
+module.eks.module.kms.aws_kms_key.this[0]: Refreshing state... [id=d4d09353-3268-4392-919d-90fb3a17b576]
+module.vpc.aws_route.private_nat_gateway[0]: Refreshing state... [id=r-rtb-04ab2dcb87c9733c81080289494]
+module.eks.module.kms.aws_kms_alias.this["cluster"]: Refreshing state... [id=alias/eks/medislot-dev-eks]
+module.eks.aws_iam_policy.cluster_encryption[0]: Refreshing state... [id=arn:aws:iam::980921726643:policy/medislot-dev-eks-cluster-ClusterEncryption9eb042d11c3d45f0c2e707b9b6]
+module.eks.aws_eks_cluster.this[0]: Refreshing state... [id=medislot-dev-eks]
+module.eks.data.aws_eks_addon_version.this["aws-ebs-csi-driver"]: Reading...
+module.eks.data.aws_eks_addon_version.this["coredns"]: Reading...
+module.eks.data.aws_eks_addon_version.this["kube-proxy"]: Reading...
+module.eks.aws_eks_access_entry.this["cluster_creator"]: Refreshing state... [id=medislot-dev-eks:arn:aws:iam::980921726643:user/ayush_cli]
+module.eks.data.aws_eks_addon_version.this["vpc-cni"]: Reading...
+module.eks.data.aws_eks_addon_version.this["eks-pod-identity-agent"]: Reading...
+module.eks.data.aws_eks_addon_version.this["metrics-server"]: Reading...
+module.eks.time_sleep.this[0]: Refreshing state... [id=2026-10-13T08:27:22Z]
+module.eks.data.tls_certificate.this[0]: Reading...
+module.eks.module.eks_managed_node_group["general"].module.user_data.null_resource.validate_cluster_service_cidr: Refreshing state... [id=8334532349510634610]
+module.eks.module.eks_managed_node_group["general"].data.aws_ssm_parameter.ami[0]: Reading...
+module.eks.aws_iam_role_policy_attachment.cluster_encryption[0]: Refreshing state... [id=medislot-dev-eks-cluster-6db5506ae4fcf2cf1b4466e358/arn:aws:iam::980921726643:policy/medislot-dev-eks-cluster-ClusterEncryption9eb042d11c3d45f0c2e707b9b6]
+module.eks.data.aws_eks_addon_version.this["eks-pod-identity-agent"]: Read complete after 0s [id=eks-pod-identity-agent]
+module.eks.data.aws_eks_addon_version.this["coredns"]: Read complete after 1s [id=coredns]
+module.eks.data.aws_eks_addon_version.this["kube-proxy"]: Read complete after 1s [id=kube-proxy]
+module.eks.data.aws_eks_addon_version.this["metrics-server"]: Read complete after 1s [id=metrics-server]
+module.eks.data.aws_eks_addon_version.this["vpc-cni"]: Read complete after 1s [id=vpc-cni]
+module.eks.module.eks_managed_node_group["general"].aws_launch_template.this[0]: Refreshing state... [id=lt-021d512b392f8685d]
+module.eks.aws_eks_access_policy_association.this["cluster_creator_admin"]: Refreshing state... [id=medislot-dev-eks#arn:aws:iam::980921726643:user/ayush_cli#arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy]
+module.eks.data.aws_eks_addon_version.this["aws-ebs-csi-driver"]: Read complete after 1s [id=aws-ebs-csi-driver]
+module.eks.aws_eks_addon.before_compute["eks-pod-identity-agent"]: Refreshing state... [id=medislot-dev-eks:eks-pod-identity-agent]
+module.eks.aws_eks_addon.before_compute["vpc-cni"]: Refreshing state... [id=medislot-dev-eks:vpc-cni]
+module.eks.data.tls_certificate.this[0]: Read complete after 1s [id=1e3a331631939a1ae4a625cd4244a4963dabbfa2]
+module.eks.aws_iam_openid_connect_provider.oidc_provider[0]: Refreshing state... [id=arn:aws:iam::980921726643:oidc-provider/oidc.eks.ap-south-1.amazonaws.com/id/CFBDF62614223220CC35D97FDD4EA2AC]
+module.eks.module.eks_managed_node_group["general"].data.aws_ssm_parameter.ami[0]: Read complete after 1s [id=/aws/service/eks/optimized-ami/1.36/amazon-linux-2023/x86_64/standard/recommended/release_version]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Refreshing state... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b]
+module.eks.aws_eks_addon.this["coredns"]: Refreshing state... [id=medislot-dev-eks:coredns]
+module.eks.aws_eks_addon.this["metrics-server"]: Refreshing state... [id=medislot-dev-eks:metrics-server]
+module.eks.aws_eks_addon.this["kube-proxy"]: Refreshing state... [id=medislot-dev-eks:kube-proxy]
+module.eks.aws_eks_addon.this["aws-ebs-csi-driver"]: Refreshing state... [id=medislot-dev-eks:aws-ebs-csi-driver]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # aws_iam_role.ebs_csi will be destroyed
+  - resource "aws_iam_role" "ebs_csi" {
+      - arn                   = "arn:aws:iam::980921726643:role/medislot-dev-ebs-csi" -> null
+      - assume_role_policy    = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action    = [
+                          - "sts:TagSession",
+                          - "sts:AssumeRole",
+                        ]
+                      - Effect    = "Allow"
+                      - Principal = {
+                          - Service = "pods.eks.amazonaws.com"
+                        }
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> null
+      - create_date           = "2026-10-13T08:16:35Z" -> null
+      - force_detach_policies = false -> null
+      - id                    = "medislot-dev-ebs-csi" -> null
+      - managed_policy_arns   = [
+          - "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy",
+        ] -> null
+      - max_session_duration  = 3600 -> null
+      - name                  = "medislot-dev-ebs-csi" -> null
+      - path                  = "/" -> null
+      - tags                  = {} -> null
+      - tags_all              = {
+          - "Environment" = "dev"
+          - "ManagedBy"   = "terraform"
+          - "Project"     = "medislot"
+          - "Repository"  = "github.com/ayushsingh199/DevOps_Capstone_Project"
+        } -> null
+      - unique_id             = "AROA6IY35W2ZVL3KA3QF7" -> null
+        # (3 unchanged attributes hidden)
+    }
+
+  # aws_iam_role_policy_attachment.ebs_csi will be destroyed
+  - resource "aws_iam_role_policy_attachment" "ebs_csi" {
+      - id         = "medislot-dev-ebs-csi/arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy" -> null
+      - policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy" -> null
+      - role       = "medislot-dev-ebs-csi" -> null
+    }
+
+  # module.eks.aws_cloudwatch_log_group.this[0] will be destroyed
+  - resource "aws_cloudwatch_log_group" "this" {
+      - arn                         = "arn:aws:logs:ap-south-1:980921726643:log-group:/aws/eks/medislot-dev-eks/cluster" -> null
+      - deletion_protection_enabled = false -> null
+      - id                          = "/aws/eks/medislot-dev-eks/cluster" -> null
+      - log_group_class             = "STANDARD" -> null
+      - name                        = "/aws/eks/medislot-dev-eks/cluster" -> null
+      - region                      = "ap-south-1" -> null
+      - retention_in_days           = 90 -> null
+      - skip_destroy                = false -> null
+      - tags                        = {
+          - "Name" = "/aws/eks/medislot-dev-eks/cluster"
+        } -> null
+      - tags_all                    = {
+          - "Environment" = "dev"
+          - "ManagedBy"   = "terraform"
+          - "Name"        = "/aws/eks/medislot-dev-eks/cluster"
+          - "Project"     = "medislot"
+          - "Repository"  = "github.com/ayushsingh199/DevOps_Capstone_Project"
+        } -> null
+        # (2 unchanged attributes hidden)
+    }
+
+  # module.eks.aws_eks_access_entry.this["cluster_creator"] will be destroyed
+  - resource "aws_eks_access_entry" "this" {
+      - access_entry_arn  = "arn:aws:eks:ap-south-1:980921726643:access-entry/medislot-dev-eks/user/980921726643/ayush_cli/aad09a2f-919a-d994-7392-4ea32470d76c" -> null
+      - cluster_name      = "medislot-dev-eks" -> null
+      - created_at        = "2026-10-13T08:26:52Z" -> null
+      - id                = "medislot-dev-eks:arn:aws:iam::980921726643:user/ayush_cli" -> null
+      - kubernetes_groups = [] -> null
+      - modified_at       = "2026-10-13T08:26:52Z" -> null
+      - principal_arn     = "arn:aws:iam::980921726643:user/ayush_cli" -> null
+      - region            = "ap-south-1" -> null
+      - tags              = {} -> null
+      - tags_all          = {
+          - "Environment" = "dev"
+          - "ManagedBy"   = "terraform"
+          - "Project"     = "medislot"
+          - "Repository"  = "github.com/ayushsingh199/DevOps_Capstone_Project"
+        } -> null
+      - type              = "STANDARD" -> null
+      - user_name         = "arn:aws:iam::980921726643:user/ayush_cli" -> null
+    }
+
+  # module.eks.aws_eks_access_policy_association.this["cluster_creator_admin"] will be destroyed
+  - resource "aws_eks_access_policy_association" "this" {
+      - associated_at = "2026-10-13 08:26:53.399 +0000 UTC" -> null
+      - cluster_name  = "medislot-dev-eks" -> null
+      - id            = "medislot-dev-eks#arn:aws:iam::980921726643:user/ayush_cli#arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy" -> null
+      - modified_at   = "2026-10-13 08:26:53.399 +0000 UTC" -> null
+      - policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy" -> null
+      - principal_arn = "arn:aws:iam::980921726643:user/ayush_cli" -> null
+      - region        = "ap-south-1" -> null
+
+      - access_scope {
+          - namespaces = [] -> null
+          - type       = "cluster" -> null
+        }
+    }
+
+  # module.eks.aws_eks_addon.before_compute["eks-pod-identity-agent"] will be destroyed
+  - resource "aws_eks_addon" "before_compute" {
+      - addon_name                  = "eks-pod-identity-agent" -> null
+      - addon_version               = "v1.4.0-eksbuild.3" -> null
+      - arn                         = "arn:aws:eks:ap-south-1:980921726643:addon/medislot-dev-eks/eks-pod-identity-agent/02d09a2f-91f4-fb0d-2fce-79ea235ce059" -> null
+      - cluster_name                = "medislot-dev-eks" -> null
+      - created_at                  = "2026-10-13T08:26:52Z" -> null
+      - id                          = "medislot-dev-eks:eks-pod-identity-agent" -> null
+      - modified_at                 = "2026-10-13T08:27:08Z" -> null
+      - preserve                    = true -> null
+      - region                      = "ap-south-1" -> null
+      - resolve_conflicts_on_create = "NONE" -> null
+      - resolve_conflicts_on_update = "OVERWRITE" -> null
+      - tags                        = {} -> null
+      - tags_all                    = {
+          - "Environment" = "dev"
+          - "ManagedBy"   = "terraform"
+          - "Project"     = "medislot"
+          - "Repository"  = "github.com/ayushsingh199/DevOps_Capstone_Project"
+        } -> null
+        # (2 unchanged attributes hidden)
+
+      - namespace_config {
+          - namespace = "kube-system" -> null
+        }
+
+      - timeouts {}
+    }
+
+  # module.eks.aws_eks_addon.before_compute["vpc-cni"] will be destroyed
+  - resource "aws_eks_addon" "before_compute" {
+      - addon_name                  = "vpc-cni" -> null
+      - addon_version               = "v1.23.2-eksbuild.1" -> null
+      - arn                         = "arn:aws:eks:ap-south-1:980921726643:addon/medislot-dev-eks/vpc-cni/eed09a2f-91f7-5ad4-3278-1bdb71fe1ab0" -> null
+      - cluster_name                = "medislot-dev-eks" -> null
+      - created_at                  = "2026-10-13T08:26:52Z" -> null
+      - id                          = "medislot-dev-eks:vpc-cni" -> null
+      - modified_at                 = "2026-10-13T08:27:00Z" -> null
+      - preserve                    = true -> null
+      - region                      = "ap-south-1" -> null
+      - resolve_conflicts_on_create = "NONE" -> null
+      - resolve_conflicts_on_update = "OVERWRITE" -> null
+      - tags                        = {} -> null
+      - tags_all                    = {
+          - "Environment" = "dev"
+          - "ManagedBy"   = "terraform"
+          - "Project"     = "medislot"
+          - "Repository"  = "github.com/ayushsingh199/DevOps_Capstone_Project"
+        } -> null
+        # (2 unchanged attributes hidden)
+
+      - namespace_config {
+          - namespace = "kube-system" -> null
+        }
+
+      - timeouts {}
+    }
+
+  # module.eks.aws_eks_addon.this["aws-ebs-csi-driver"] will be destroyed
+  - resource "aws_eks_addon" "this" {
+      - addon_name                  = "aws-ebs-csi-driver" -> null
+      - addon_version               = "v1.66.0-eksbuild.1" -> null
+      - arn                         = "arn:aws:eks:ap-south-1:980921726643:addon/medislot-dev-eks/aws-ebs-csi-driver/aad09a30-c2cc-4fef-cf63-f5aaa446b5e1" -> null
+      - cluster_name                = "medislot-dev-eks" -> null
+      - created_at                  = "2026-10-13T08:29:30Z" -> null
+      - id                          = "medislot-dev-eks:aws-ebs-csi-driver" -> null
+      - modified_at                 = "2026-10-13T08:30:10Z" -> null
+      - preserve                    = true -> null
+      - region                      = "ap-south-1" -> null
+      - resolve_conflicts_on_create = "NONE" -> null
+      - resolve_conflicts_on_update = "OVERWRITE" -> null
+      - tags                        = {} -> null
+      - tags_all                    = {
+          - "Environment" = "dev"
+          - "ManagedBy"   = "terraform"
+          - "Project"     = "medislot"
+          - "Repository"  = "github.com/ayushsingh199/DevOps_Capstone_Project"
+        } -> null
+        # (2 unchanged attributes hidden)
+
+      - namespace_config {
+          - namespace = "kube-system" -> null
+        }
+
+      - pod_identity_association {
+          - role_arn        = "arn:aws:iam::980921726643:role/medislot-dev-ebs-csi" -> null
+          - service_account = "ebs-csi-controller-sa" -> null
+        }
+
+      - timeouts {}
+    }
+
+  # module.eks.aws_eks_addon.this["coredns"] will be destroyed
+  - resource "aws_eks_addon" "this" {
+      - addon_name                  = "coredns" -> null
+      - addon_version               = "v1.14.7-eksbuild.11" -> null
+      - arn                         = "arn:aws:eks:ap-south-1:980921726643:addon/medislot-dev-eks/coredns/82d09a30-c2cc-f8fe-2d6f-081128408645" -> null
+      - cluster_name                = "medislot-dev-eks" -> null
+      - created_at                  = "2026-10-13T08:29:29Z" -> null
+      - id                          = "medislot-dev-eks:coredns" -> null
+      - modified_at                 = "2026-10-13T08:29:42Z" -> null
+      - preserve                    = true -> null
+      - region                      = "ap-south-1" -> null
+      - resolve_conflicts_on_create = "NONE" -> null
+      - resolve_conflicts_on_update = "OVERWRITE" -> null
+      - tags                        = {} -> null
+      - tags_all                    = {
+          - "Environment" = "dev"
+          - "ManagedBy"   = "terraform"
+          - "Project"     = "medislot"
+          - "Repository"  = "github.com/ayushsingh199/DevOps_Capstone_Project"
+        } -> null
+        # (2 unchanged attributes hidden)
+
+      - namespace_config {
+          - namespace = "kube-system" -> null
+        }
+
+      - timeouts {}
+    }
+
+  # module.eks.aws_eks_addon.this["kube-proxy"] will be destroyed
+  - resource "aws_eks_addon" "this" {
+      - addon_name                  = "kube-proxy" -> null
+      - addon_version               = "v1.36.0-eksbuild.45" -> null
+      - arn                         = "arn:aws:eks:ap-south-1:980921726643:addon/medislot-dev-eks/kube-proxy/72d09a30-c2ca-ce04-5a84-db5cb96ccbfa" -> null
+      - cluster_name                = "medislot-dev-eks" -> null
+      - created_at                  = "2026-10-13T08:29:29Z" -> null
+      - id                          = "medislot-dev-eks:kube-proxy" -> null
+      - modified_at                 = "2026-10-13T08:29:46Z" -> null
+      - preserve                    = true -> null
+      - region                      = "ap-south-1" -> null
+      - resolve_conflicts_on_create = "NONE" -> null
+      - resolve_conflicts_on_update = "OVERWRITE" -> null
+      - tags                        = {} -> null
+      - tags_all                    = {
+          - "Environment" = "dev"
+          - "ManagedBy"   = "terraform"
+          - "Project"     = "medislot"
+          - "Repository"  = "github.com/ayushsingh199/DevOps_Capstone_Project"
+        } -> null
+        # (2 unchanged attributes hidden)
+
+      - namespace_config {
+          - namespace = "kube-system" -> null
+        }
+
+      - timeouts {}
+    }
+
+  # module.eks.aws_eks_addon.this["metrics-server"] will be destroyed
+  - resource "aws_eks_addon" "this" {
+      - addon_name                  = "metrics-server" -> null
+      - addon_version               = "v0.9.0-eksbuild.11" -> null
+      - arn                         = "arn:aws:eks:ap-south-1:980921726643:addon/medislot-dev-eks/metrics-server/6ed09a30-c2cd-582e-5c48-088e868be572" -> null
+      - cluster_name                = "medislot-dev-eks" -> null
+      - created_at                  = "2026-10-13T08:29:29Z" -> null
+      - id                          = "medislot-dev-eks:metrics-server" -> null
+      - modified_at                 = "2026-10-13T08:30:04Z" -> null
+      - preserve                    = true -> null
+      - region                      = "ap-south-1" -> null
+      - resolve_conflicts_on_create = "NONE" -> null
+      - resolve_conflicts_on_update = "OVERWRITE" -> null
+      - tags                        = {} -> null
+      - tags_all                    = {
+          - "Environment" = "dev"
+          - "ManagedBy"   = "terraform"
+          - "Project"     = "medislot"
+          - "Repository"  = "github.com/ayushsingh199/DevOps_Capstone_Project"
+        } -> null
+        # (2 unchanged attributes hidden)
+
+      - namespace_config {
+          - namespace = "kube-system" -> null
+        }
+
+      - timeouts {}
+    }
+
+  # module.eks.aws_eks_cluster.this[0] will be destroyed
+  - resource "aws_eks_cluster" "this" {
+      - arn                           = "arn:aws:eks:ap-south-1:980921726643:cluster/medislot-dev-eks" -> null
+      - bootstrap_self_managed_addons = false -> null
+      - certificate_authority         = [
+          - {
+              - data = "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURNakNDQWhxZ0F3SUJBZ0lSQUlFMnFVakVGTGdVbUtBWjd3VUF4OHN3RFFZSktvWklodmNOQVFFTEJRQXcKSnpFUU1BNEdBMVVFQ2hNSFFWZFRJRVZMVXpFVE1CRUdBMVVFQXhNS2EzVmlaWEp1WlhSbGN6QWVGdzB5TmpFdwpNVE13T0RFM01qWmFGdzB6TVRFd01USXdPREUzTWpaYU1DY3hFREFPQmdOVkJBb1RCMEZYVXlCRlMxTXhFekFSCkJnTlZCQU1UQ210MVltVnlibVYwWlhNd2dnRWlNQTBHQ1NxR1NJYjNEUUVCQVFVQUE0SUJEd0F3Z2dFS0FvSUIKQVFEZzhRK3JqRnU4ZkZTOWtZUUJ3K0MybVUvK2FyNVYzd0Q1bEcyclpMZEM5RVdKWi9PczJacE81by9XZ2lNQwp6NmdiM3BDdXBYTkkzUFVZRnNPVFhhVUFzOGkrdXVrdHJJWkZWbjZvQXhURmZYRjAzTUpydC9ZU0NLbyt1ZGJkCk1DaDJRWkRpSUJ5VlN1QzhWUitoUEVJTUQyZVhYZEQxbVFCSzhEendONEc0NkFMOUlCOXROWkRhT1NNY3p4UUQKUjRaVzc2S2IvbnUrUTgrQjMvdEd1bHNDNGE0K05QTzR5Nnk3Ty8rL0NBQ3kxVVBJLzhpYTVNK1FQMWV2MjZSbwpBNy9YeFRBT2RzNzJ0Qm54VFVnTE1Xb1lSTGpOVGtrbDNiNTZRc2hraFNEZHlpem1zZ3U3NkVZWHhKNmpmZi8zCmRiVis2VktZT004dXhDZXJnTnJPSXBmREFnTUJBQUdqV1RCWE1BNEdBMVVkRHdFQi93UUVBd0lDcERBUEJnTlYKSFJNQkFmOEVCVEFEQVFIL01CMEdBMVVkRGdRV0JCVGF1ekdTLzl3OURPY2dieWY3UVozOERwQThrakFWQmdOVgpIUkVFRGpBTWdncHJkV0psY201bGRHVnpNQTBHQ1NxR1NJYjNEUUVCQ3dVQUE0SUJBUUFqTm9obHVuTUtWT3k3CmlBa2V2dGZZOXV6MHdBUGpRSFRQSDB4NnZsNm5KcU9WWTZiOUw4a1hOTndOV3FSYmViaHE1K0ZnZjJtYmxkWUMKMTNNUG5pUmwwZHlrV1laYStnMzZqbVg1U3N2M1dodGRJR2VIN0xPSmRPSDBHNnA5Y0Z5dFNmbmF3L1VwSGlsUgpmVitPbDhHdUd0SlFiaTlLR3AyLzFSZ01aUXRveDA4TXhzUWp6eDQrM1Biam1qTjQxc0Qzd3VpNloyQmVKNWxpCmZRUWdZZ01GNGo2amxWWjhwZGZBcm45RHNNVHhBT0lzZHVSWEtLUXo5eGVlOUxyVzU5L0pOcXZHUndBVEVXYXgKK3QvTU43bEQvSlRrdjJSbXdsaUExWTgwcUJiaVNYQ1RJaklWRytwajNqMkJRWDJZdXZuY1hNcC8wM1BJcndFcQp1Qk91T3J4eQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg=="
+            },
+        ] -> null
+      - created_at                    = "2026-10-13T08:17:05Z" -> null
+      - deletion_protection           = false -> null
+      - enabled_cluster_log_types     = [
+          - "api",
+          - "audit",
+          - "authenticator",
+        ] -> null
+      - endpoint                      = "https://CFBDF62614223220CC35D97FDD4EA2AC.gr7.ap-south-1.eks.amazonaws.com" -> null
+      - id                            = "medislot-dev-eks" -> null
+      - identity                      = [
+          - {
+              - oidc = [
+                  - {
+                      - issuer = "https://oidc.eks.ap-south-1.amazonaws.com/id/CFBDF62614223220CC35D97FDD4EA2AC"
+                    },
+                ]
+            },
+        ] -> null
+      - name                          = "medislot-dev-eks" -> null
+      - platform_version              = "eks.14" -> null
+      - region                        = "ap-south-1" -> null
+      - role_arn                      = "arn:aws:iam::980921726643:role/medislot-dev-eks-cluster-6db5506ae4fcf2cf1b4466e358" -> null
+      - status                        = "ACTIVE" -> null
+      - tags                          = {} -> null
+      - tags_all                      = {
+          - "Environment" = "dev"
+          - "ManagedBy"   = "terraform"
+          - "Project"     = "medislot"
+          - "Repository"  = "github.com/ayushsingh199/DevOps_Capstone_Project"
+        } -> null
+      - version                       = "1.36" -> null
+
+      - access_config {
+          - authentication_mode                         = "API_AND_CONFIG_MAP" -> null
+          - bootstrap_cluster_creator_admin_permissions = false -> null
+        }
+
+      - compute_config {
+          - enabled       = false -> null
+          - node_pools    = [] -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - control_plane_scaling_config {
+          - tier = "standard" -> null
+        }
+
+      - encryption_config {
+          - resources = [
+              - "secrets",
+            ] -> null
+
+          - provider {
+              - key_arn = "arn:aws:kms:ap-south-1:980921726643:key/d4d09353-3268-4392-919d-90fb3a17b576" -> null
+            }
+        }
+
+      - kube_api_server_config {
+          - event_ttl = "60m" -> null
+
+          - service_node_port_range {
+              - max_port = 32767 -> null
+              - min_port = 30000 -> null
+            }
+        }
+
+      - kube_controller_manager_config {
+          - horizontal_pod_autoscaler_controller_config {
+              - horizontal_pod_autoscaler_sync_period = "15s" -> null
+            }
+          - pod_gc_controller_config {
+              - terminated_pod_gc_threshold = 12500 -> null
+            }
+        }
+
+      - kube_scheduler_config {
+          - node_resources_fit {
+              - scoring_strategy {
+                  - type = "LeastAllocated" -> null
+
+                  - resource {
+                      - name   = "cpu" -> null
+                      - weight = 1 -> null
+                    }
+                  - resource {
+                      - name   = "memory" -> null
+                      - weight = 1 -> null
+                    }
+                }
+            }
+        }
+
+      - kubernetes_network_config {
+          - ip_family         = "ipv4" -> null
+          - service_ipv4_cidr = "172.20.0.0/16" -> null
+            # (1 unchanged attribute hidden)
+
+          - elastic_load_balancing {
+              - enabled = false -> null
+            }
+        }
+
+      - storage_config {
+          - block_storage {
+              - enabled = false -> null
+            }
+        }
+
+      - upgrade_policy {
+          - support_type = "EXTENDED" -> null
+        }
+
+      - vpc_config {
+          - cluster_security_group_id = "sg-03e207217ddd0852b" -> null
+          - control_plane_egress_mode = "AWS_MANAGED" -> null
+          - endpoint_private_access   = true -> null
+          - endpoint_public_access    = true -> null
+          - public_access_cidrs       = [
+              - "0.0.0.0/0",
+            ] -> null
+          - security_group_ids        = [
+              - "sg-00e5ff68c573130e2",
+            ] -> null
+          - subnet_ids                = [
+              - "subnet-04ad03fe64e57eaa0",
+              - "subnet-0c920e0ba68314b56",
+            ] -> null
+          - vpc_id                    = "vpc-07760798354aad45f" -> null
+        }
+    }
+
+  # module.eks.aws_iam_openid_connect_provider.oidc_provider[0] will be destroyed
+  - resource "aws_iam_openid_connect_provider" "oidc_provider" {
+      - arn             = "arn:aws:iam::980921726643:oidc-provider/oidc.eks.ap-south-1.amazonaws.com/id/CFBDF62614223220CC35D97FDD4EA2AC" -> null
+      - client_id_list  = [
+          - "sts.amazonaws.com",
+        ] -> null
+      - id              = "arn:aws:iam::980921726643:oidc-provider/oidc.eks.ap-south-1.amazonaws.com/id/CFBDF62614223220CC35D97FDD4EA2AC" -> null
+      - tags            = {
+          - "Name" = "medislot-dev-eks-eks-irsa"
+        } -> null
+      - tags_all        = {
+          - "Environment" = "dev"
+          - "ManagedBy"   = "terraform"
+          - "Name"        = "medislot-dev-eks-eks-irsa"
+          - "Project"     = "medislot"
+          - "Repository"  = "github.com/ayushsingh199/DevOps_Capstone_Project"
+        } -> null
+      - thumbprint_list = [
+          - "06b25927c42a721631c1efd9431e648fa62e1e39",
+        ] -> null
+      - url             = "oidc.eks.ap-south-1.amazonaws.com/id/CFBDF62614223220CC35D97FDD4EA2AC" -> null
+    }
+
+  # module.eks.aws_iam_policy.cluster_encryption[0] will be destroyed
+  - resource "aws_iam_policy" "cluster_encryption" {
+      - arn              = "arn:aws:iam::980921726643:policy/medislot-dev-eks-cluster-ClusterEncryption9eb042d11c3d45f0c2e707b9b6" -> null
+      - attachment_count = 1 -> null
+      - description      = "Cluster encryption policy to allow cluster role to utilize CMK provided" -> null
+      - id               = "arn:aws:iam::980921726643:policy/medislot-dev-eks-cluster-ClusterEncryption9eb042d11c3d45f0c2e707b9b6" -> null
+      - name             = "medislot-dev-eks-cluster-ClusterEncryption9eb042d11c3d45f0c2e707b9b6" -> null
+      - name_prefix      = "medislot-dev-eks-cluster-ClusterEncryption" -> null
+      - path             = "/" -> null
+      - policy           = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action   = [
+                          - "kms:Encrypt",
+                          - "kms:Decrypt",
+                          - "kms:ListGrants",
+                          - "kms:DescribeKey",
+                        ]
+                      - Effect   = "Allow"
+                      - Resource = "arn:aws:kms:ap-south-1:980921726643:key/d4d09353-3268-4392-919d-90fb3a17b576"
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> null
+      - policy_id        = "ANPA6IY35W2Z7DT6DOBSK" -> null
+      - tags             = {} -> null
+      - tags_all         = {
+          - "Environment" = "dev"
+          - "ManagedBy"   = "terraform"
+          - "Project"     = "medislot"
+          - "Repository"  = "github.com/ayushsingh199/DevOps_Capstone_Project"
+        } -> null
+    }
+
+  # module.eks.aws_iam_role.this[0] will be destroyed
+  - resource "aws_iam_role" "this" {
+      - arn                   = "arn:aws:iam::980921726643:role/medislot-dev-eks-cluster-6db5506ae4fcf2cf1b4466e358" -> null
+      - assume_role_policy    = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action    = [
+                          - "sts:TagSession",
+                          - "sts:AssumeRole",
+                        ]
+                      - Effect    = "Allow"
+                      - Principal = {
+                          - Service = "eks.amazonaws.com"
+                        }
+                      - Sid       = "EKSClusterAssumeRole"
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> null
+      - create_date           = "2026-10-13T08:16:35Z" -> null
+      - force_detach_policies = true -> null
+      - id                    = "medislot-dev-eks-cluster-6db5506ae4fcf2cf1b4466e358" -> null
+      - managed_policy_arns   = [
+          - "arn:aws:iam::980921726643:policy/medislot-dev-eks-cluster-ClusterEncryption9eb042d11c3d45f0c2e707b9b6",
+          - "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy",
+        ] -> null
+      - max_session_duration  = 3600 -> null
+      - name                  = "medislot-dev-eks-cluster-6db5506ae4fcf2cf1b4466e358" -> null
+      - name_prefix           = "medislot-dev-eks-cluster-" -> null
+      - path                  = "/" -> null
+      - tags                  = {} -> null
+      - tags_all              = {
+          - "Environment" = "dev"
+          - "ManagedBy"   = "terraform"
+          - "Project"     = "medislot"
+          - "Repository"  = "github.com/ayushsingh199/DevOps_Capstone_Project"
+        } -> null
+      - unique_id             = "AROA6IY35W2ZRGU56HLFU" -> null
+        # (2 unchanged attributes hidden)
+    }
+
+  # module.eks.aws_iam_role_policy_attachment.cluster_encryption[0] will be destroyed
+  - resource "aws_iam_role_policy_attachment" "cluster_encryption" {
+      - id         = "medislot-dev-eks-cluster-6db5506ae4fcf2cf1b4466e358/arn:aws:iam::980921726643:policy/medislot-dev-eks-cluster-ClusterEncryption9eb042d11c3d45f0c2e707b9b6" -> null
+      - policy_arn = "arn:aws:iam::980921726643:policy/medislot-dev-eks-cluster-ClusterEncryption9eb042d11c3d45f0c2e707b9b6" -> null
+      - role       = "medislot-dev-eks-cluster-6db5506ae4fcf2cf1b4466e358" -> null
+    }
+
+  # module.eks.aws_iam_role_policy_attachment.this["AmazonEKSClusterPolicy"] will be destroyed
+  - resource "aws_iam_role_policy_attachment" "this" {
+      - id         = "medislot-dev-eks-cluster-6db5506ae4fcf2cf1b4466e358/arn:aws:iam::aws:policy/AmazonEKSClusterPolicy" -> null
+      - policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy" -> null
+      - role       = "medislot-dev-eks-cluster-6db5506ae4fcf2cf1b4466e358" -> null
+    }
+
+  # module.eks.aws_security_group.cluster[0] will be destroyed
+  - resource "aws_security_group" "cluster" {
+      - arn                    = "arn:aws:ec2:ap-south-1:980921726643:security-group/sg-00e5ff68c573130e2" -> null
+      - description            = "EKS cluster security group" -> null
+      - egress                 = [] -> null
+      - id                     = "sg-00e5ff68c573130e2" -> null
+      - ingress                = [
+          - {
+              - cidr_blocks      = []
+              - description      = "Node groups to cluster API"
+              - from_port        = 443
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "tcp"
+              - security_groups  = [
+                  - "sg-09efa3097517225d2",
+                ]
+              - self             = false
+              - to_port          = 443
+            },
+        ] -> null
+      - name                   = "medislot-dev-eks-cluster-4ca91fbe52fd20a965b681c7cd" -> null
+      - name_prefix            = "medislot-dev-eks-cluster-" -> null
+      - owner_id               = "980921726643" -> null
+      - region                 = "ap-south-1" -> null
+      - revoke_rules_on_delete = false -> null
+      - tags                   = {
+          - "Name" = "medislot-dev-eks-cluster"
+        } -> null
+      - tags_all               = {
+          - "Environment" = "dev"
+          - "ManagedBy"   = "terraform"
+          - "Name"        = "medislot-dev-eks-cluster"
+          - "Project"     = "medislot"
+          - "Repository"  = "github.com/ayushsingh199/DevOps_Capstone_Project"
+        } -> null
+      - vpc_id                 = "vpc-07760798354aad45f" -> null
+    }
+
+  # module.eks.aws_security_group.node[0] will be destroyed
+  - resource "aws_security_group" "node" {
+      - arn                    = "arn:aws:ec2:ap-south-1:980921726643:security-group/sg-09efa3097517225d2" -> null
+      - description            = "EKS node shared security group" -> null
+      - egress                 = [
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - description      = "Allow all egress"
+              - from_port        = 0
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "-1"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 0
+            },
+        ] -> null
+      - id                     = "sg-09efa3097517225d2" -> null
+      - ingress                = [
+          - {
+              - cidr_blocks      = []
+              - description      = "Cluster API to node 10251/tcp webhook"
+              - from_port        = 10251
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "tcp"
+              - security_groups  = [
+                  - "sg-00e5ff68c573130e2",
+                ]
+              - self             = false
+              - to_port          = 10251
+            },
+          - {
+              - cidr_blocks      = []
+              - description      = "Cluster API to node 4443/tcp webhook"
+              - from_port        = 4443
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "tcp"
+              - security_groups  = [
+                  - "sg-00e5ff68c573130e2",
+                ]
+              - self             = false
+              - to_port          = 4443
+            },
+          - {
+              - cidr_blocks      = []
+              - description      = "Cluster API to node 6443/tcp webhook"
+              - from_port        = 6443
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "tcp"
+              - security_groups  = [
+                  - "sg-00e5ff68c573130e2",
+                ]
+              - self             = false
+              - to_port          = 6443
+            },
+          - {
+              - cidr_blocks      = []
+              - description      = "Cluster API to node 8443/tcp webhook"
+              - from_port        = 8443
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "tcp"
+              - security_groups  = [
+                  - "sg-00e5ff68c573130e2",
+                ]
+              - self             = false
+              - to_port          = 8443
+            },
+          - {
+              - cidr_blocks      = []
+              - description      = "Cluster API to node 9443/tcp webhook"
+              - from_port        = 9443
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "tcp"
+              - security_groups  = [
+                  - "sg-00e5ff68c573130e2",
+                ]
+              - self             = false
+              - to_port          = 9443
+            },
+          - {
+              - cidr_blocks      = []
+              - description      = "Cluster API to node groups"
+              - from_port        = 443
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "tcp"
+              - security_groups  = [
+                  - "sg-00e5ff68c573130e2",
+                ]
+              - self             = false
+              - to_port          = 443
+            },
+          - {
+              - cidr_blocks      = []
+              - description      = "Cluster API to node kubelets"
+              - from_port        = 10250
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "tcp"
+              - security_groups  = [
+                  - "sg-00e5ff68c573130e2",
+                ]
+              - self             = false
+              - to_port          = 10250
+            },
+          - {
+              - cidr_blocks      = []
+              - description      = "Node to node CoreDNS UDP"
+              - from_port        = 53
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "udp"
+              - security_groups  = []
+              - self             = true
+              - to_port          = 53
+            },
+          - {
+              - cidr_blocks      = []
+              - description      = "Node to node CoreDNS"
+              - from_port        = 53
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "tcp"
+              - security_groups  = []
+              - self             = true
+              - to_port          = 53
+            },
+          - {
+              - cidr_blocks      = []
+              - description      = "Node to node ingress on ephemeral ports"
+              - from_port        = 1025
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "tcp"
+              - security_groups  = []
+              - self             = true
+              - to_port          = 65535
+            },
+        ] -> null
+      - name                   = "medislot-dev-eks-node-22762ed8ede865b7ae3b8de5a6" -> null
+      - name_prefix            = "medislot-dev-eks-node-" -> null
+      - owner_id               = "980921726643" -> null
+      - region                 = "ap-south-1" -> null
+      - revoke_rules_on_delete = false -> null
+      - tags                   = {
+          - "Name"                                   = "medislot-dev-eks-node"
+          - "kubernetes.io/cluster/medislot-dev-eks" = "owned"
+        } -> null
+      - tags_all               = {
+          - "Environment"                            = "dev"
+          - "ManagedBy"                              = "terraform"
+          - "Name"                                   = "medislot-dev-eks-node"
+          - "Project"                                = "medislot"
+          - "Repository"                             = "github.com/ayushsingh199/DevOps_Capstone_Project"
+          - "kubernetes.io/cluster/medislot-dev-eks" = "owned"
+        } -> null
+      - vpc_id                 = "vpc-07760798354aad45f" -> null
+    }
+
+  # module.eks.aws_security_group_rule.cluster["ingress_nodes_443"] will be destroyed
+  - resource "aws_security_group_rule" "cluster" {
+      - description              = "Node groups to cluster API" -> null
+      - from_port                = 443 -> null
+      - id                       = "sgrule-2530693658" -> null
+      - protocol                 = "tcp" -> null
+      - region                   = "ap-south-1" -> null
+      - security_group_id        = "sg-00e5ff68c573130e2" -> null
+      - security_group_rule_id   = "sgr-08c45b891e17809ba" -> null
+      - self                     = false -> null
+      - source_security_group_id = "sg-09efa3097517225d2" -> null
+      - to_port                  = 443 -> null
+      - type                     = "ingress" -> null
+    }
+
+  # module.eks.aws_security_group_rule.node["egress_all"] will be destroyed
+  - resource "aws_security_group_rule" "node" {
+      - cidr_blocks            = [
+          - "0.0.0.0/0",
+        ] -> null
+      - description            = "Allow all egress" -> null
+      - from_port              = 0 -> null
+      - id                     = "sgrule-2288096696" -> null
+      - protocol               = "-1" -> null
+      - region                 = "ap-south-1" -> null
+      - security_group_id      = "sg-09efa3097517225d2" -> null
+      - security_group_rule_id = "sgr-0fbcfcf2c2620b7b4" -> null
+      - self                   = false -> null
+      - to_port                = 0 -> null
+      - type                   = "egress" -> null
+    }
+
+  # module.eks.aws_security_group_rule.node["ingress_cluster_10251_webhook"] will be destroyed
+  - resource "aws_security_group_rule" "node" {
+      - description              = "Cluster API to node 10251/tcp webhook" -> null
+      - from_port                = 10251 -> null
+      - id                       = "sgrule-2820896649" -> null
+      - protocol                 = "tcp" -> null
+      - region                   = "ap-south-1" -> null
+      - security_group_id        = "sg-09efa3097517225d2" -> null
+      - security_group_rule_id   = "sgr-0e211b77bf6f8672c" -> null
+      - self                     = false -> null
+      - source_security_group_id = "sg-00e5ff68c573130e2" -> null
+      - to_port                  = 10251 -> null
+      - type                     = "ingress" -> null
+    }
+
+  # module.eks.aws_security_group_rule.node["ingress_cluster_443"] will be destroyed
+  - resource "aws_security_group_rule" "node" {
+      - description              = "Cluster API to node groups" -> null
+      - from_port                = 443 -> null
+      - id                       = "sgrule-3217215123" -> null
+      - protocol                 = "tcp" -> null
+      - region                   = "ap-south-1" -> null
+      - security_group_id        = "sg-09efa3097517225d2" -> null
+      - security_group_rule_id   = "sgr-0e78644fa0b0964eb" -> null
+      - self                     = false -> null
+      - source_security_group_id = "sg-00e5ff68c573130e2" -> null
+      - to_port                  = 443 -> null
+      - type                     = "ingress" -> null
+    }
+
+  # module.eks.aws_security_group_rule.node["ingress_cluster_4443_webhook"] will be destroyed
+  - resource "aws_security_group_rule" "node" {
+      - description              = "Cluster API to node 4443/tcp webhook" -> null
+      - from_port                = 4443 -> null
+      - id                       = "sgrule-3256060258" -> null
+      - protocol                 = "tcp" -> null
+      - region                   = "ap-south-1" -> null
+      - security_group_id        = "sg-09efa3097517225d2" -> null
+      - security_group_rule_id   = "sgr-06e5e7b5fafe84284" -> null
+      - self                     = false -> null
+      - source_security_group_id = "sg-00e5ff68c573130e2" -> null
+      - to_port                  = 4443 -> null
+      - type                     = "ingress" -> null
+    }
+
+  # module.eks.aws_security_group_rule.node["ingress_cluster_6443_webhook"] will be destroyed
+  - resource "aws_security_group_rule" "node" {
+      - description              = "Cluster API to node 6443/tcp webhook" -> null
+      - from_port                = 6443 -> null
+      - id                       = "sgrule-189918964" -> null
+      - protocol                 = "tcp" -> null
+      - region                   = "ap-south-1" -> null
+      - security_group_id        = "sg-09efa3097517225d2" -> null
+      - security_group_rule_id   = "sgr-09a7374ffe2706c90" -> null
+      - self                     = false -> null
+      - source_security_group_id = "sg-00e5ff68c573130e2" -> null
+      - to_port                  = 6443 -> null
+      - type                     = "ingress" -> null
+    }
+
+  # module.eks.aws_security_group_rule.node["ingress_cluster_8443_webhook"] will be destroyed
+  - resource "aws_security_group_rule" "node" {
+      - description              = "Cluster API to node 8443/tcp webhook" -> null
+      - from_port                = 8443 -> null
+      - id                       = "sgrule-403559125" -> null
+      - protocol                 = "tcp" -> null
+      - region                   = "ap-south-1" -> null
+      - security_group_id        = "sg-09efa3097517225d2" -> null
+      - security_group_rule_id   = "sgr-04d649f07baa4cd2a" -> null
+      - self                     = false -> null
+      - source_security_group_id = "sg-00e5ff68c573130e2" -> null
+      - to_port                  = 8443 -> null
+      - type                     = "ingress" -> null
+    }
+
+  # module.eks.aws_security_group_rule.node["ingress_cluster_9443_webhook"] will be destroyed
+  - resource "aws_security_group_rule" "node" {
+      - description              = "Cluster API to node 9443/tcp webhook" -> null
+      - from_port                = 9443 -> null
+      - id                       = "sgrule-2091704606" -> null
+      - protocol                 = "tcp" -> null
+      - region                   = "ap-south-1" -> null
+      - security_group_id        = "sg-09efa3097517225d2" -> null
+      - security_group_rule_id   = "sgr-08b55dc3e38fe01b3" -> null
+      - self                     = false -> null
+      - source_security_group_id = "sg-00e5ff68c573130e2" -> null
+      - to_port                  = 9443 -> null
+      - type                     = "ingress" -> null
+    }
+
+  # module.eks.aws_security_group_rule.node["ingress_cluster_kubelet"] will be destroyed
+  - resource "aws_security_group_rule" "node" {
+      - description              = "Cluster API to node kubelets" -> null
+      - from_port                = 10250 -> null
+      - id                       = "sgrule-2624202738" -> null
+      - protocol                 = "tcp" -> null
+      - region                   = "ap-south-1" -> null
+      - security_group_id        = "sg-09efa3097517225d2" -> null
+      - security_group_rule_id   = "sgr-0e91085ca2ca4e2f7" -> null
+      - self                     = false -> null
+      - source_security_group_id = "sg-00e5ff68c573130e2" -> null
+      - to_port                  = 10250 -> null
+      - type                     = "ingress" -> null
+    }
+
+  # module.eks.aws_security_group_rule.node["ingress_nodes_ephemeral"] will be destroyed
+  - resource "aws_security_group_rule" "node" {
+      - description            = "Node to node ingress on ephemeral ports" -> null
+      - from_port              = 1025 -> null
+      - id                     = "sgrule-228932949" -> null
+      - protocol               = "tcp" -> null
+      - region                 = "ap-south-1" -> null
+      - security_group_id      = "sg-09efa3097517225d2" -> null
+      - security_group_rule_id = "sgr-08a96db2d29a47aa3" -> null
+      - self                   = true -> null
+      - to_port                = 65535 -> null
+      - type                   = "ingress" -> null
+    }
+
+  # module.eks.aws_security_group_rule.node["ingress_self_coredns_tcp"] will be destroyed
+  - resource "aws_security_group_rule" "node" {
+      - description            = "Node to node CoreDNS" -> null
+      - from_port              = 53 -> null
+      - id                     = "sgrule-2262471200" -> null
+      - protocol               = "tcp" -> null
+      - region                 = "ap-south-1" -> null
+      - security_group_id      = "sg-09efa3097517225d2" -> null
+      - security_group_rule_id = "sgr-0c19f5b2e201aa727" -> null
+      - self                   = true -> null
+      - to_port                = 53 -> null
+      - type                   = "ingress" -> null
+    }
+
+  # module.eks.aws_security_group_rule.node["ingress_self_coredns_udp"] will be destroyed
+  - resource "aws_security_group_rule" "node" {
+      - description            = "Node to node CoreDNS UDP" -> null
+      - from_port              = 53 -> null
+      - id                     = "sgrule-579154383" -> null
+      - protocol               = "udp" -> null
+      - region                 = "ap-south-1" -> null
+      - security_group_id      = "sg-09efa3097517225d2" -> null
+      - security_group_rule_id = "sgr-0f5ce3c588f306d5a" -> null
+      - self                   = true -> null
+      - to_port                = 53 -> null
+      - type                   = "ingress" -> null
+    }
+
+  # module.eks.time_sleep.this[0] will be destroyed
+  - resource "time_sleep" "this" {
+      - create_duration = "30s" -> null
+      - id              = "2026-10-13T08:27:22Z" -> null
+      - triggers        = {
+          - "certificate_authority_data" = "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURNakNDQWhxZ0F3SUJBZ0lSQUlFMnFVakVGTGdVbUtBWjd3VUF4OHN3RFFZSktvWklodmNOQVFFTEJRQXcKSnpFUU1BNEdBMVVFQ2hNSFFWZFRJRVZMVXpFVE1CRUdBMVVFQXhNS2EzVmlaWEp1WlhSbGN6QWVGdzB5TmpFdwpNVE13T0RFM01qWmFGdzB6TVRFd01USXdPREUzTWpaYU1DY3hFREFPQmdOVkJBb1RCMEZYVXlCRlMxTXhFekFSCkJnTlZCQU1UQ210MVltVnlibVYwWlhNd2dnRWlNQTBHQ1NxR1NJYjNEUUVCQVFVQUE0SUJEd0F3Z2dFS0FvSUIKQVFEZzhRK3JqRnU4ZkZTOWtZUUJ3K0MybVUvK2FyNVYzd0Q1bEcyclpMZEM5RVdKWi9PczJacE81by9XZ2lNQwp6NmdiM3BDdXBYTkkzUFVZRnNPVFhhVUFzOGkrdXVrdHJJWkZWbjZvQXhURmZYRjAzTUpydC9ZU0NLbyt1ZGJkCk1DaDJRWkRpSUJ5VlN1QzhWUitoUEVJTUQyZVhYZEQxbVFCSzhEendONEc0NkFMOUlCOXROWkRhT1NNY3p4UUQKUjRaVzc2S2IvbnUrUTgrQjMvdEd1bHNDNGE0K05QTzR5Nnk3Ty8rL0NBQ3kxVVBJLzhpYTVNK1FQMWV2MjZSbwpBNy9YeFRBT2RzNzJ0Qm54VFVnTE1Xb1lSTGpOVGtrbDNiNTZRc2hraFNEZHlpem1zZ3U3NkVZWHhKNmpmZi8zCmRiVis2VktZT004dXhDZXJnTnJPSXBmREFnTUJBQUdqV1RCWE1BNEdBMVVkRHdFQi93UUVBd0lDcERBUEJnTlYKSFJNQkFmOEVCVEFEQVFIL01CMEdBMVVkRGdRV0JCVGF1ekdTLzl3OURPY2dieWY3UVozOERwQThrakFWQmdOVgpIUkVFRGpBTWdncHJkV0psY201bGRHVnpNQTBHQ1NxR1NJYjNEUUVCQ3dVQUE0SUJBUUFqTm9obHVuTUtWT3k3CmlBa2V2dGZZOXV6MHdBUGpRSFRQSDB4NnZsNm5KcU9WWTZiOUw4a1hOTndOV3FSYmViaHE1K0ZnZjJtYmxkWUMKMTNNUG5pUmwwZHlrV1laYStnMzZqbVg1U3N2M1dodGRJR2VIN0xPSmRPSDBHNnA5Y0Z5dFNmbmF3L1VwSGlsUgpmVitPbDhHdUd0SlFiaTlLR3AyLzFSZ01aUXRveDA4TXhzUWp6eDQrM1Biam1qTjQxc0Qzd3VpNloyQmVKNWxpCmZRUWdZZ01GNGo2amxWWjhwZGZBcm45RHNNVHhBT0lzZHVSWEtLUXo5eGVlOUxyVzU5L0pOcXZHUndBVEVXYXgKK3QvTU43bEQvSlRrdjJSbXdsaUExWTgwcUJiaVNYQ1RJaklWRytwajNqMkJRWDJZdXZuY1hNcC8wM1BJcndFcQp1Qk91T3J4eQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg=="
+          - "endpoint"                   = "https://CFBDF62614223220CC35D97FDD4EA2AC.gr7.ap-south-1.eks.amazonaws.com"
+          - "kubernetes_version"         = "1.36"
+          - "name"                       = "medislot-dev-eks"
+          - "service_cidr"               = "172.20.0.0/16"
+        } -> null
+    }
+
+  # module.vpc.aws_default_network_acl.this[0] will be destroyed
+  - resource "aws_default_network_acl" "this" {
+      - arn                    = "arn:aws:ec2:ap-south-1:980921726643:network-acl/acl-0eacaedc11172f5ab" -> null
+      - default_network_acl_id = "acl-0eacaedc11172f5ab" -> null
+      - id                     = "acl-0eacaedc11172f5ab" -> null
+      - owner_id               = "980921726643" -> null
+      - region                 = "ap-south-1" -> null
+      - subnet_ids             = [
+          - "subnet-04ad03fe64e57eaa0",
+          - "subnet-079e81876e320c6a0",
+          - "subnet-0c920e0ba68314b56",
+          - "subnet-0e023e0a50d469c3d",
+        ] -> null
+      - tags                   = {
+          - "Name" = "medislot-dev-vpc-default"
+        } -> null
+      - tags_all               = {
+          - "Environment" = "dev"
+          - "ManagedBy"   = "terraform"
+          - "Name"        = "medislot-dev-vpc-default"
+          - "Project"     = "medislot"
+          - "Repository"  = "github.com/ayushsingh199/DevOps_Capstone_Project"
+        } -> null
+      - vpc_id                 = "vpc-07760798354aad45f" -> null
+
+      - egress {
+          - action          = "allow" -> null
+          - from_port       = 0 -> null
+          - icmp_code       = 0 -> null
+          - icmp_type       = 0 -> null
+          - ipv6_cidr_block = "::/0" -> null
+          - protocol        = "-1" -> null
+          - rule_no         = 101 -> null
+          - to_port         = 0 -> null
+            # (1 unchanged attribute hidden)
+        }
+      - egress {
+          - action          = "allow" -> null
+          - cidr_block      = "0.0.0.0/0" -> null
+          - from_port       = 0 -> null
+          - icmp_code       = 0 -> null
+          - icmp_type       = 0 -> null
+          - protocol        = "-1" -> null
+          - rule_no         = 100 -> null
+          - to_port         = 0 -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - ingress {
+          - action          = "allow" -> null
+          - from_port       = 0 -> null
+          - icmp_code       = 0 -> null
+          - icmp_type       = 0 -> null
+          - ipv6_cidr_block = "::/0" -> null
+          - protocol        = "-1" -> null
+          - rule_no         = 101 -> null
+          - to_port         = 0 -> null
+            # (1 unchanged attribute hidden)
+        }
+      - ingress {
+          - action          = "allow" -> null
+          - cidr_block      = "0.0.0.0/0" -> null
+          - from_port       = 0 -> null
+          - icmp_code       = 0 -> null
+          - icmp_type       = 0 -> null
+          - protocol        = "-1" -> null
+          - rule_no         = 100 -> null
+          - to_port         = 0 -> null
+            # (1 unchanged attribute hidden)
+        }
+    }
+
+  # module.vpc.aws_default_route_table.default[0] will be destroyed
+  - resource "aws_default_route_table" "default" {
+      - arn                    = "arn:aws:ec2:ap-south-1:980921726643:route-table/rtb-0dcb5230d22f165dc" -> null
+      - default_route_table_id = "rtb-0dcb5230d22f165dc" -> null
+      - id                     = "rtb-0dcb5230d22f165dc" -> null
+      - owner_id               = "980921726643" -> null
+      - propagating_vgws       = [] -> null
+      - region                 = "ap-south-1" -> null
+      - route                  = [] -> null
+      - tags                   = {
+          - "Name" = "medislot-dev-vpc-default"
+        } -> null
+      - tags_all               = {
+          - "Environment" = "dev"
+          - "ManagedBy"   = "terraform"
+          - "Name"        = "medislot-dev-vpc-default"
+          - "Project"     = "medislot"
+          - "Repository"  = "github.com/ayushsingh199/DevOps_Capstone_Project"
+        } -> null
+      - vpc_id                 = "vpc-07760798354aad45f" -> null
+
+      - timeouts {
+          - create = "5m" -> null
+          - update = "5m" -> null
+        }
+    }
+
+  # module.vpc.aws_default_security_group.this[0] will be destroyed
+  - resource "aws_default_security_group" "this" {
+      - arn                    = "arn:aws:ec2:ap-south-1:980921726643:security-group/sg-0d4f2fb013c9a1a36" -> null
+      - description            = "default VPC security group" -> null
+      - egress                 = [] -> null
+      - id                     = "sg-0d4f2fb013c9a1a36" -> null
+      - ingress                = [] -> null
+      - name                   = "default" -> null
+      - owner_id               = "980921726643" -> null
+      - region                 = "ap-south-1" -> null
+      - revoke_rules_on_delete = false -> null
+      - tags                   = {
+          - "Name" = "medislot-dev-vpc-default"
+        } -> null
+      - tags_all               = {
+          - "Environment" = "dev"
+          - "ManagedBy"   = "terraform"
+          - "Name"        = "medislot-dev-vpc-default"
+          - "Project"     = "medislot"
+          - "Repository"  = "github.com/ayushsingh199/DevOps_Capstone_Project"
+        } -> null
+      - vpc_id                 = "vpc-07760798354aad45f" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # module.vpc.aws_eip.nat[0] will be destroyed
+  - resource "aws_eip" "nat" {
+      - allocation_id            = "eipalloc-07a3b9ac4ec02a2ab" -> null
+      - arn                      = "arn:aws:ec2:ap-south-1:980921726643:elastic-ip/eipalloc-07a3b9ac4ec02a2ab" -> null
+      - association_id           = "eipassoc-0ceb39b4b2d89965c" -> null
+      - domain                   = "vpc" -> null
+      - id                       = "eipalloc-07a3b9ac4ec02a2ab" -> null
+      - network_border_group     = "ap-south-1" -> null
+      - network_interface        = "eni-07a5a3cbb771347ed" -> null
+      - private_dns              = "ip-10-20-0-199.ap-south-1.compute.internal" -> null
+      - private_ip               = "10.20.0.199" -> null
+      - public_dns               = "ec2-13-204-241-71.ap-south-1.compute.amazonaws.com" -> null
+      - public_ip                = "13.204.241.71" -> null
+      - public_ipv4_pool         = "amazon" -> null
+      - region                   = "ap-south-1" -> null
+      - tags                     = {
+          - "Name" = "medislot-dev-vpc-ap-south-1a"
+        } -> null
+      - tags_all                 = {
+          - "Environment" = "dev"
+          - "ManagedBy"   = "terraform"
+          - "Name"        = "medislot-dev-vpc-ap-south-1a"
+          - "Project"     = "medislot"
+          - "Repository"  = "github.com/ayushsingh199/DevOps_Capstone_Project"
+        } -> null
+        # (6 unchanged attributes hidden)
+    }
+
+  # module.vpc.aws_internet_gateway.this[0] will be destroyed
+  - resource "aws_internet_gateway" "this" {
+      - arn      = "arn:aws:ec2:ap-south-1:980921726643:internet-gateway/igw-08966ae76bda31ee1" -> null
+      - id       = "igw-08966ae76bda31ee1" -> null
+      - owner_id = "980921726643" -> null
+      - region   = "ap-south-1" -> null
+      - tags     = {
+          - "Name" = "medislot-dev-vpc"
+        } -> null
+      - tags_all = {
+          - "Environment" = "dev"
+          - "ManagedBy"   = "terraform"
+          - "Name"        = "medislot-dev-vpc"
+          - "Project"     = "medislot"
+          - "Repository"  = "github.com/ayushsingh199/DevOps_Capstone_Project"
+        } -> null
+      - vpc_id   = "vpc-07760798354aad45f" -> null
+    }
+
+  # module.vpc.aws_nat_gateway.this[0] will be destroyed
+  - resource "aws_nat_gateway" "this" {
+      - allocation_id                      = "eipalloc-07a3b9ac4ec02a2ab" -> null
+      - association_id                     = "eipassoc-0ceb39b4b2d89965c" -> null
+      - availability_mode                  = "zonal" -> null
+      - connectivity_type                  = "public" -> null
+      - id                                 = "nat-0ac58f2390339aaf1" -> null
+      - network_interface_id               = "eni-07a5a3cbb771347ed" -> null
+      - private_ip                         = "10.20.0.199" -> null
+      - public_ip                          = "13.204.241.71" -> null
+      - region                             = "ap-south-1" -> null
+      - regional_nat_gateway_address       = [] -> null
+      - secondary_allocation_ids           = [] -> null
+      - secondary_private_ip_address_count = 0 -> null
+      - secondary_private_ip_addresses     = [] -> null
+      - subnet_id                          = "subnet-0e023e0a50d469c3d" -> null
+      - tags                               = {
+          - "Name" = "medislot-dev-vpc-ap-south-1a"
+        } -> null
+      - tags_all                           = {
+          - "Environment" = "dev"
+          - "ManagedBy"   = "terraform"
+          - "Name"        = "medislot-dev-vpc-ap-south-1a"
+          - "Project"     = "medislot"
+          - "Repository"  = "github.com/ayushsingh199/DevOps_Capstone_Project"
+        } -> null
+      - vpc_id                             = "vpc-07760798354aad45f" -> null
+    }
+
+  # module.vpc.aws_route.private_nat_gateway[0] will be destroyed
+  - resource "aws_route" "private_nat_gateway" {
+      - destination_cidr_block      = "0.0.0.0/0" -> null
+      - id                          = "r-rtb-04ab2dcb87c9733c81080289494" -> null
+      - nat_gateway_id              = "nat-0ac58f2390339aaf1" -> null
+      - origin                      = "CreateRoute" -> null
+      - region                      = "ap-south-1" -> null
+      - route_table_id              = "rtb-04ab2dcb87c9733c8" -> null
+      - state                       = "active" -> null
+        # (14 unchanged attributes hidden)
+
+      - timeouts {
+          - create = "5m" -> null
+        }
+    }
+
+  # module.vpc.aws_route.public_internet_gateway[0] will be destroyed
+  - resource "aws_route" "public_internet_gateway" {
+      - destination_cidr_block      = "0.0.0.0/0" -> null
+      - gateway_id                  = "igw-08966ae76bda31ee1" -> null
+      - id                          = "r-rtb-0bfa9e1df73da1c311080289494" -> null
+      - origin                      = "CreateRoute" -> null
+      - region                      = "ap-south-1" -> null
+      - route_table_id              = "rtb-0bfa9e1df73da1c31" -> null
+      - state                       = "active" -> null
+        # (14 unchanged attributes hidden)
+
+      - timeouts {
+          - create = "5m" -> null
+        }
+    }
+
+  # module.vpc.aws_route_table.private[0] will be destroyed
+  - resource "aws_route_table" "private" {
+      - arn              = "arn:aws:ec2:ap-south-1:980921726643:route-table/rtb-04ab2dcb87c9733c8" -> null
+      - id               = "rtb-04ab2dcb87c9733c8" -> null
+      - owner_id         = "980921726643" -> null
+      - propagating_vgws = [] -> null
+      - region           = "ap-south-1" -> null
+      - route            = [
+          - {
+              - cidr_block                 = "0.0.0.0/0"
+              - nat_gateway_id             = "nat-0ac58f2390339aaf1"
+                # (12 unchanged attributes hidden)
+            },
+        ] -> null
+      - tags             = {
+          - "Name" = "medislot-dev-vpc-private"
+        } -> null
+      - tags_all         = {
+          - "Environment" = "dev"
+          - "ManagedBy"   = "terraform"
+          - "Name"        = "medislot-dev-vpc-private"
+          - "Project"     = "medislot"
+          - "Repository"  = "github.com/ayushsingh199/DevOps_Capstone_Project"
+        } -> null
+      - vpc_id           = "vpc-07760798354aad45f" -> null
+    }
+
+  # module.vpc.aws_route_table.public[0] will be destroyed
+  - resource "aws_route_table" "public" {
+      - arn              = "arn:aws:ec2:ap-south-1:980921726643:route-table/rtb-0bfa9e1df73da1c31" -> null
+      - id               = "rtb-0bfa9e1df73da1c31" -> null
+      - owner_id         = "980921726643" -> null
+      - propagating_vgws = [] -> null
+      - region           = "ap-south-1" -> null
+      - route            = [
+          - {
+              - cidr_block                 = "0.0.0.0/0"
+              - gateway_id                 = "igw-08966ae76bda31ee1"
+                # (12 unchanged attributes hidden)
+            },
+        ] -> null
+      - tags             = {
+          - "Name" = "medislot-dev-vpc-public"
+        } -> null
+      - tags_all         = {
+          - "Environment" = "dev"
+          - "ManagedBy"   = "terraform"
+          - "Name"        = "medislot-dev-vpc-public"
+          - "Project"     = "medislot"
+          - "Repository"  = "github.com/ayushsingh199/DevOps_Capstone_Project"
+        } -> null
+      - vpc_id           = "vpc-07760798354aad45f" -> null
+    }
+
+  # module.vpc.aws_route_table_association.private[0] will be destroyed
+  - resource "aws_route_table_association" "private" {
+      - id             = "rtbassoc-0adc1fd7aaec3d28a" -> null
+      - region         = "ap-south-1" -> null
+      - route_table_id = "rtb-04ab2dcb87c9733c8" -> null
+      - subnet_id      = "subnet-04ad03fe64e57eaa0" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # module.vpc.aws_route_table_association.private[1] will be destroyed
+  - resource "aws_route_table_association" "private" {
+      - id             = "rtbassoc-0fcac3d2519d08e37" -> null
+      - region         = "ap-south-1" -> null
+      - route_table_id = "rtb-04ab2dcb87c9733c8" -> null
+      - subnet_id      = "subnet-0c920e0ba68314b56" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # module.vpc.aws_route_table_association.public[0] will be destroyed
+  - resource "aws_route_table_association" "public" {
+      - id             = "rtbassoc-0c15d31f638ce4c4c" -> null
+      - region         = "ap-south-1" -> null
+      - route_table_id = "rtb-0bfa9e1df73da1c31" -> null
+      - subnet_id      = "subnet-0e023e0a50d469c3d" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # module.vpc.aws_route_table_association.public[1] will be destroyed
+  - resource "aws_route_table_association" "public" {
+      - id             = "rtbassoc-0df0b857a6f6cecc4" -> null
+      - region         = "ap-south-1" -> null
+      - route_table_id = "rtb-0bfa9e1df73da1c31" -> null
+      - subnet_id      = "subnet-079e81876e320c6a0" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # module.vpc.aws_subnet.private[0] will be destroyed
+  - resource "aws_subnet" "private" {
+      - arn                                            = "arn:aws:ec2:ap-south-1:980921726643:subnet/subnet-04ad03fe64e57eaa0" -> null
+      - assign_ipv6_address_on_creation                = false -> null
+      - availability_zone                              = "ap-south-1a" -> null
+      - availability_zone_id                           = "aps1-az1" -> null
+      - cidr_block                                     = "10.20.10.0/24" -> null
+      - enable_dns64                                   = false -> null
+      - enable_lni_at_device_index                     = 0 -> null
+      - enable_resource_name_dns_a_record_on_launch    = false -> null
+      - enable_resource_name_dns_aaaa_record_on_launch = false -> null
+      - id                                             = "subnet-04ad03fe64e57eaa0" -> null
+      - ipv6_native                                    = false -> null
+      - map_customer_owned_ip_on_launch                = false -> null
+      - map_public_ip_on_launch                        = false -> null
+      - owner_id                                       = "980921726643" -> null
+      - private_dns_hostname_type_on_launch            = "ip-name" -> null
+      - region                                         = "ap-south-1" -> null
+      - tags                                           = {
+          - "Name"                            = "medislot-dev-vpc-private-ap-south-1a"
+          - "kubernetes.io/role/internal-elb" = "1"
+        } -> null
+      - tags_all                                       = {
+          - "Environment"                     = "dev"
+          - "ManagedBy"                       = "terraform"
+          - "Name"                            = "medislot-dev-vpc-private-ap-south-1a"
+          - "Project"                         = "medislot"
+          - "Repository"                      = "github.com/ayushsingh199/DevOps_Capstone_Project"
+          - "kubernetes.io/role/internal-elb" = "1"
+        } -> null
+      - vpc_id                                         = "vpc-07760798354aad45f" -> null
+        # (4 unchanged attributes hidden)
+    }
+
+  # module.vpc.aws_subnet.private[1] will be destroyed
+  - resource "aws_subnet" "private" {
+      - arn                                            = "arn:aws:ec2:ap-south-1:980921726643:subnet/subnet-0c920e0ba68314b56" -> null
+      - assign_ipv6_address_on_creation                = false -> null
+      - availability_zone                              = "ap-south-1b" -> null
+      - availability_zone_id                           = "aps1-az3" -> null
+      - cidr_block                                     = "10.20.11.0/24" -> null
+      - enable_dns64                                   = false -> null
+      - enable_lni_at_device_index                     = 0 -> null
+      - enable_resource_name_dns_a_record_on_launch    = false -> null
+      - enable_resource_name_dns_aaaa_record_on_launch = false -> null
+      - id                                             = "subnet-0c920e0ba68314b56" -> null
+      - ipv6_native                                    = false -> null
+      - map_customer_owned_ip_on_launch                = false -> null
+      - map_public_ip_on_launch                        = false -> null
+      - owner_id                                       = "980921726643" -> null
+      - private_dns_hostname_type_on_launch            = "ip-name" -> null
+      - region                                         = "ap-south-1" -> null
+      - tags                                           = {
+          - "Name"                            = "medislot-dev-vpc-private-ap-south-1b"
+          - "kubernetes.io/role/internal-elb" = "1"
+        } -> null
+      - tags_all                                       = {
+          - "Environment"                     = "dev"
+          - "ManagedBy"                       = "terraform"
+          - "Name"                            = "medislot-dev-vpc-private-ap-south-1b"
+          - "Project"                         = "medislot"
+          - "Repository"                      = "github.com/ayushsingh199/DevOps_Capstone_Project"
+          - "kubernetes.io/role/internal-elb" = "1"
+        } -> null
+      - vpc_id                                         = "vpc-07760798354aad45f" -> null
+        # (4 unchanged attributes hidden)
+    }
+
+  # module.vpc.aws_subnet.public[0] will be destroyed
+  - resource "aws_subnet" "public" {
+      - arn                                            = "arn:aws:ec2:ap-south-1:980921726643:subnet/subnet-0e023e0a50d469c3d" -> null
+      - assign_ipv6_address_on_creation                = false -> null
+      - availability_zone                              = "ap-south-1a" -> null
+      - availability_zone_id                           = "aps1-az1" -> null
+      - cidr_block                                     = "10.20.0.0/24" -> null
+      - enable_dns64                                   = false -> null
+      - enable_lni_at_device_index                     = 0 -> null
+      - enable_resource_name_dns_a_record_on_launch    = false -> null
+      - enable_resource_name_dns_aaaa_record_on_launch = false -> null
+      - id                                             = "subnet-0e023e0a50d469c3d" -> null
+      - ipv6_native                                    = false -> null
+      - map_customer_owned_ip_on_launch                = false -> null
+      - map_public_ip_on_launch                        = false -> null
+      - owner_id                                       = "980921726643" -> null
+      - private_dns_hostname_type_on_launch            = "ip-name" -> null
+      - region                                         = "ap-south-1" -> null
+      - tags                                           = {
+          - "Name"                   = "medislot-dev-vpc-public-ap-south-1a"
+          - "kubernetes.io/role/elb" = "1"
+        } -> null
+      - tags_all                                       = {
+          - "Environment"            = "dev"
+          - "ManagedBy"              = "terraform"
+          - "Name"                   = "medislot-dev-vpc-public-ap-south-1a"
+          - "Project"                = "medislot"
+          - "Repository"             = "github.com/ayushsingh199/DevOps_Capstone_Project"
+          - "kubernetes.io/role/elb" = "1"
+        } -> null
+      - vpc_id                                         = "vpc-07760798354aad45f" -> null
+        # (4 unchanged attributes hidden)
+    }
+
+  # module.vpc.aws_subnet.public[1] will be destroyed
+  - resource "aws_subnet" "public" {
+      - arn                                            = "arn:aws:ec2:ap-south-1:980921726643:subnet/subnet-079e81876e320c6a0" -> null
+      - assign_ipv6_address_on_creation                = false -> null
+      - availability_zone                              = "ap-south-1b" -> null
+      - availability_zone_id                           = "aps1-az3" -> null
+      - cidr_block                                     = "10.20.1.0/24" -> null
+      - enable_dns64                                   = false -> null
+      - enable_lni_at_device_index                     = 0 -> null
+      - enable_resource_name_dns_a_record_on_launch    = false -> null
+      - enable_resource_name_dns_aaaa_record_on_launch = false -> null
+      - id                                             = "subnet-079e81876e320c6a0" -> null
+      - ipv6_native                                    = false -> null
+      - map_customer_owned_ip_on_launch                = false -> null
+      - map_public_ip_on_launch                        = false -> null
+      - owner_id                                       = "980921726643" -> null
+      - private_dns_hostname_type_on_launch            = "ip-name" -> null
+      - region                                         = "ap-south-1" -> null
+      - tags                                           = {
+          - "Name"                   = "medislot-dev-vpc-public-ap-south-1b"
+          - "kubernetes.io/role/elb" = "1"
+        } -> null
+      - tags_all                                       = {
+          - "Environment"            = "dev"
+          - "ManagedBy"              = "terraform"
+          - "Name"                   = "medislot-dev-vpc-public-ap-south-1b"
+          - "Project"                = "medislot"
+          - "Repository"             = "github.com/ayushsingh199/DevOps_Capstone_Project"
+          - "kubernetes.io/role/elb" = "1"
+        } -> null
+      - vpc_id                                         = "vpc-07760798354aad45f" -> null
+        # (4 unchanged attributes hidden)
+    }
+
+  # module.vpc.aws_vpc.this[0] will be destroyed
+  - resource "aws_vpc" "this" {
+      - arn                                  = "arn:aws:ec2:ap-south-1:980921726643:vpc/vpc-07760798354aad45f" -> null
+      - assign_generated_ipv6_cidr_block     = false -> null
+      - cidr_block                           = "10.20.0.0/16" -> null
+      - default_network_acl_id               = "acl-0eacaedc11172f5ab" -> null
+      - default_route_table_id               = "rtb-0dcb5230d22f165dc" -> null
+      - default_security_group_id            = "sg-0d4f2fb013c9a1a36" -> null
+      - dhcp_options_id                      = "dopt-01af19f2bd467300b" -> null
+      - enable_dns_hostnames                 = true -> null
+      - enable_dns_support                   = true -> null
+      - enable_network_address_usage_metrics = false -> null
+      - id                                   = "vpc-07760798354aad45f" -> null
+      - instance_tenancy                     = "default" -> null
+      - ipv6_netmask_length                  = 0 -> null
+      - main_route_table_id                  = "rtb-0dcb5230d22f165dc" -> null
+      - owner_id                             = "980921726643" -> null
+      - region                               = "ap-south-1" -> null
+      - tags                                 = {
+          - "Name" = "medislot-dev-vpc"
+        } -> null
+      - tags_all                             = {
+          - "Environment" = "dev"
+          - "ManagedBy"   = "terraform"
+          - "Name"        = "medislot-dev-vpc"
+          - "Project"     = "medislot"
+          - "Repository"  = "github.com/ayushsingh199/DevOps_Capstone_Project"
+        } -> null
+        # (4 unchanged attributes hidden)
+    }
+
+  # module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0] will be destroyed
+  - resource "aws_eks_node_group" "this" {
+      - ami_type               = "AL2023_x86_64_STANDARD" -> null
+      - arn                    = "arn:aws:eks:ap-south-1:980921726643:nodegroup/medislot-dev-eks/medislot-dev-general-8757cd496d78235378bb7cc78b/6ed09a2f-d935-3995-0c45-9400bf912fb9" -> null
+      - capacity_type          = "ON_DEMAND" -> null
+      - cluster_name           = "medislot-dev-eks" -> null
+      - disk_size              = 0 -> null
+      - id                     = "medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b" -> null
+      - instance_types         = [
+          - "t3.large",
+        ] -> null
+      - labels                 = {
+          - "workload" = "general"
+        } -> null
+      - node_group_name        = "medislot-dev-general-8757cd496d78235378bb7cc78b" -> null
+      - node_group_name_prefix = "medislot-dev-general-" -> null
+      - node_role_arn          = "arn:aws:iam::980921726643:role/medislot-dev-general-eks-node-group-36d14f6c8d568eb3d5ebb39669" -> null
+      - region                 = "ap-south-1" -> null
+      - release_version        = "1.36.4-20261003" -> null
+      - resources              = [
+          - {
+              - autoscaling_groups              = [
+                  - {
+                      - name = "eks-medislot-dev-general-8757cd496d78235378bb7cc78b-6ed09a2f-d935-3995-0c45-9400bf912fb9"
+                    },
+                ]
+                # (1 unchanged attribute hidden)
+            },
+        ] -> null
+      - status                 = "ACTIVE" -> null
+      - subnet_ids             = [
+          - "subnet-04ad03fe64e57eaa0",
+          - "subnet-0c920e0ba68314b56",
+        ] -> null
+      - tags                   = {
+          - "Name" = "medislot-dev-general"
+        } -> null
+      - tags_all               = {
+          - "Environment" = "dev"
+          - "ManagedBy"   = "terraform"
+          - "Name"        = "medislot-dev-general"
+          - "Project"     = "medislot"
+          - "Repository"  = "github.com/ayushsingh199/DevOps_Capstone_Project"
+        } -> null
+      - version                = "1.36" -> null
+
+      - launch_template {
+          - id      = "lt-021d512b392f8685d" -> null
+          - name    = "general-351e78bda805c1a58b5a37d71b" -> null
+          - version = "1" -> null
+        }
+
+      - scaling_config {
+          - desired_size = 2 -> null
+          - max_size     = 3 -> null
+          - min_size     = 2 -> null
+        }
+
+      - update_config {
+          - max_unavailable            = 0 -> null
+          - max_unavailable_percentage = 33 -> null
+            # (1 unchanged attribute hidden)
+        }
+    }
+
+  # module.eks.module.eks_managed_node_group["general"].aws_iam_role.this[0] will be destroyed
+  - resource "aws_iam_role" "this" {
+      - arn                   = "arn:aws:iam::980921726643:role/medislot-dev-general-eks-node-group-36d14f6c8d568eb3d5ebb39669" -> null
+      - assume_role_policy    = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action    = "sts:AssumeRole"
+                      - Effect    = "Allow"
+                      - Principal = {
+                          - Service = "ec2.amazonaws.com"
+                        }
+                      - Sid       = "EKSNodeAssumeRole"
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> null
+      - create_date           = "2026-10-13T08:16:35Z" -> null
+      - description           = "EKS managed node group IAM role" -> null
+      - force_detach_policies = true -> null
+      - id                    = "medislot-dev-general-eks-node-group-36d14f6c8d568eb3d5ebb39669" -> null
+      - managed_policy_arns   = [
+          - "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly",
+          - "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy",
+          - "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy",
+        ] -> null
+      - max_session_duration  = 3600 -> null
+      - name                  = "medislot-dev-general-eks-node-group-36d14f6c8d568eb3d5ebb39669" -> null
+      - name_prefix           = "medislot-dev-general-eks-node-group-" -> null
+      - path                  = "/" -> null
+      - tags                  = {} -> null
+      - tags_all              = {
+          - "Environment" = "dev"
+          - "ManagedBy"   = "terraform"
+          - "Project"     = "medislot"
+          - "Repository"  = "github.com/ayushsingh199/DevOps_Capstone_Project"
+        } -> null
+      - unique_id             = "AROA6IY35W2ZXDGJKCYIA" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # module.eks.module.eks_managed_node_group["general"].aws_iam_role_policy_attachment.this["AmazonEC2ContainerRegistryReadOnly"] will be destroyed
+  - resource "aws_iam_role_policy_attachment" "this" {
+      - id         = "medislot-dev-general-eks-node-group-36d14f6c8d568eb3d5ebb39669/arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly" -> null
+      - policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly" -> null
+      - role       = "medislot-dev-general-eks-node-group-36d14f6c8d568eb3d5ebb39669" -> null
+    }
+
+  # module.eks.module.eks_managed_node_group["general"].aws_iam_role_policy_attachment.this["AmazonEKSWorkerNodePolicy"] will be destroyed
+  - resource "aws_iam_role_policy_attachment" "this" {
+      - id         = "medislot-dev-general-eks-node-group-36d14f6c8d568eb3d5ebb39669/arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy" -> null
+      - policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy" -> null
+      - role       = "medislot-dev-general-eks-node-group-36d14f6c8d568eb3d5ebb39669" -> null
+    }
+
+  # module.eks.module.eks_managed_node_group["general"].aws_iam_role_policy_attachment.this["AmazonEKS_CNI_Policy"] will be destroyed
+  - resource "aws_iam_role_policy_attachment" "this" {
+      - id         = "medislot-dev-general-eks-node-group-36d14f6c8d568eb3d5ebb39669/arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy" -> null
+      - policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy" -> null
+      - role       = "medislot-dev-general-eks-node-group-36d14f6c8d568eb3d5ebb39669" -> null
+    }
+
+  # module.eks.module.eks_managed_node_group["general"].aws_launch_template.this[0] will be destroyed
+  - resource "aws_launch_template" "this" {
+      - arn                                  = "arn:aws:ec2:ap-south-1:980921726643:launch-template/lt-021d512b392f8685d" -> null
+      - default_version                      = 1 -> null
+      - description                          = "Custom launch template for medislot-dev-general EKS managed node group" -> null
+      - disable_api_stop                     = false -> null
+      - disable_api_termination              = false -> null
+      - id                                   = "lt-021d512b392f8685d" -> null
+      - latest_version                       = 1 -> null
+      - name                                 = "general-351e78bda805c1a58b5a37d71b" -> null
+      - name_prefix                          = "general-" -> null
+      - region                               = "ap-south-1" -> null
+      - security_group_names                 = [] -> null
+      - tags                                 = {} -> null
+      - tags_all                             = {
+          - "Environment" = "dev"
+          - "ManagedBy"   = "terraform"
+          - "Project"     = "medislot"
+          - "Repository"  = "github.com/ayushsingh199/DevOps_Capstone_Project"
+        } -> null
+      - update_default_version               = true -> null
+      - vpc_security_group_ids               = [
+          - "sg-09efa3097517225d2",
+        ] -> null
+        # (8 unchanged attributes hidden)
+
+      - metadata_options {
+          - http_endpoint               = "enabled" -> null
+          - http_put_response_hop_limit = 1 -> null
+          - http_tokens                 = "required" -> null
+            # (2 unchanged attributes hidden)
+        }
+
+      - tag_specifications {
+          - resource_type = "instance" -> null
+          - tags          = {
+              - "Name" = "medislot-dev-general"
+            } -> null
+        }
+      - tag_specifications {
+          - resource_type = "network-interface" -> null
+          - tags          = {
+              - "Name" = "medislot-dev-general"
+            } -> null
+        }
+      - tag_specifications {
+          - resource_type = "volume" -> null
+          - tags          = {
+              - "Name" = "medislot-dev-general"
+            } -> null
+        }
+    }
+
+  # module.eks.module.kms.aws_kms_alias.this["cluster"] will be destroyed
+  - resource "aws_kms_alias" "this" {
+      - arn            = "arn:aws:kms:ap-south-1:980921726643:alias/eks/medislot-dev-eks" -> null
+      - id             = "alias/eks/medislot-dev-eks" -> null
+      - name           = "alias/eks/medislot-dev-eks" -> null
+      - region         = "ap-south-1" -> null
+      - target_key_arn = "arn:aws:kms:ap-south-1:980921726643:key/d4d09353-3268-4392-919d-90fb3a17b576" -> null
+      - target_key_id  = "d4d09353-3268-4392-919d-90fb3a17b576" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # module.eks.module.kms.aws_kms_key.this[0] will be destroyed
+  - resource "aws_kms_key" "this" {
+      - arn                                = "arn:aws:kms:ap-south-1:980921726643:key/d4d09353-3268-4392-919d-90fb3a17b576" -> null
+      - bypass_policy_lockout_safety_check = false -> null
+      - customer_master_key_spec           = "SYMMETRIC_DEFAULT" -> null
+      - description                        = "medislot-dev-eks cluster encryption key" -> null
+      - enable_key_rotation                = true -> null
+      - id                                 = "d4d09353-3268-4392-919d-90fb3a17b576" -> null
+      - is_enabled                         = true -> null
+      - key_id                             = "d4d09353-3268-4392-919d-90fb3a17b576" -> null
+      - key_usage                          = "ENCRYPT_DECRYPT" -> null
+      - multi_region                       = false -> null
+      - policy                             = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action    = "kms:*"
+                      - Effect    = "Allow"
+                      - Principal = {
+                          - AWS = "arn:aws:iam::980921726643:root"
+                        }
+                      - Resource  = "*"
+                      - Sid       = "Default"
+                    },
+                  - {
+                      - Action    = [
+                          - "kms:Update*",
+                          - "kms:UntagResource",
+                          - "kms:TagResource",
+                          - "kms:ScheduleKeyDeletion",
+                          - "kms:Revoke*",
+                          - "kms:ReplicateKey",
+                          - "kms:Put*",
+                          - "kms:List*",
+                          - "kms:ImportKeyMaterial",
+                          - "kms:Get*",
+                          - "kms:Enable*",
+                          - "kms:Disable*",
+                          - "kms:Describe*",
+                          - "kms:Delete*",
+                          - "kms:Create*",
+                          - "kms:CancelKeyDeletion",
+                        ]
+                      - Effect    = "Allow"
+                      - Principal = {
+                          - AWS = "arn:aws:iam::980921726643:user/ayush_cli"
+                        }
+                      - Resource  = "*"
+                      - Sid       = "KeyAdministration"
+                    },
+                  - {
+                      - Action    = [
+                          - "kms:ReEncrypt*",
+                          - "kms:GenerateDataKey*",
+                          - "kms:Encrypt",
+                          - "kms:DescribeKey",
+                          - "kms:Decrypt",
+                        ]
+                      - Effect    = "Allow"
+                      - Principal = {
+                          - AWS = "arn:aws:iam::980921726643:role/medislot-dev-eks-cluster-6db5506ae4fcf2cf1b4466e358"
+                        }
+                      - Resource  = "*"
+                      - Sid       = "KeyUsage"
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> null
+      - region                             = "ap-south-1" -> null
+      - rotation_period_in_days            = 365 -> null
+      - tags                               = {} -> null
+      - tags_all                           = {
+          - "Environment" = "dev"
+          - "ManagedBy"   = "terraform"
+          - "Project"     = "medislot"
+          - "Repository"  = "github.com/ayushsingh199/DevOps_Capstone_Project"
+        } -> null
+        # (2 unchanged attributes hidden)
+    }
+
+  # module.eks.module.eks_managed_node_group["general"].module.user_data.null_resource.validate_cluster_service_cidr will be destroyed
+  - resource "null_resource" "validate_cluster_service_cidr" {
+      - id = "8334532349510634610" -> null
+    }
+
+Plan: 0 to add, 0 to change, 60 to destroy.
+
+Changes to Outputs:
+  - cluster_endpoint   = "https://CFBDF62614223220CC35D97FDD4EA2AC.gr7.ap-south-1.eks.amazonaws.com" -> null
+  - cluster_name       = "medislot-dev-eks" -> null
+  - cluster_version    = "1.36" -> null
+  - configure_kubectl  = "aws eks update-kubeconfig --region ap-south-1 --name medislot-dev-eks" -> null
+  - node_group_names   = [
+      - "medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b",
+    ] -> null
+  - private_subnet_ids = [
+      - "subnet-04ad03fe64e57eaa0",
+      - "subnet-0c920e0ba68314b56",
+    ] -> null
+  - public_subnet_ids  = [
+      - "subnet-0e023e0a50d469c3d",
+      - "subnet-079e81876e320c6a0",
+    ] -> null
+  - region             = "ap-south-1" -> null
+  - vpc_id             = "vpc-07760798354aad45f" -> null
+module.eks.aws_iam_role_policy_attachment.cluster_encryption[0]: Destroying... [id=medislot-dev-eks-cluster-6db5506ae4fcf2cf1b4466e358/arn:aws:iam::980921726643:policy/medislot-dev-eks-cluster-ClusterEncryption9eb042d11c3d45f0c2e707b9b6]
+module.vpc.aws_route_table_association.private[0]: Destroying... [id=rtbassoc-0adc1fd7aaec3d28a]
+aws_iam_role_policy_attachment.ebs_csi: Destroying... [id=medislot-dev-ebs-csi/arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy]
+module.eks.aws_iam_openid_connect_provider.oidc_provider[0]: Destroying... [id=arn:aws:iam::980921726643:oidc-provider/oidc.eks.ap-south-1.amazonaws.com/id/CFBDF62614223220CC35D97FDD4EA2AC]
+module.eks.aws_eks_addon.this["kube-proxy"]: Destroying... [id=medislot-dev-eks:kube-proxy]
+module.eks.aws_eks_addon.this["aws-ebs-csi-driver"]: Destroying... [id=medislot-dev-eks:aws-ebs-csi-driver]
+module.eks.aws_eks_addon.this["coredns"]: Destroying... [id=medislot-dev-eks:coredns]
+module.eks.aws_eks_addon.this["metrics-server"]: Destroying... [id=medislot-dev-eks:metrics-server]
+module.vpc.aws_route.private_nat_gateway[0]: Destroying... [id=r-rtb-04ab2dcb87c9733c81080289494]
+module.vpc.aws_default_network_acl.this[0]: Destroying... [id=acl-0eacaedc11172f5ab]
+module.vpc.aws_default_network_acl.this[0]: Destruction complete after 0s
+module.eks.module.kms.aws_kms_alias.this["cluster"]: Destroying... [id=alias/eks/medislot-dev-eks]
+module.eks.module.kms.aws_kms_alias.this["cluster"]: Destruction complete after 1s
+module.vpc.aws_route_table_association.private[1]: Destroying... [id=rtbassoc-0fcac3d2519d08e37]
+module.vpc.aws_route_table_association.private[0]: Destruction complete after 1s
+module.vpc.aws_default_security_group.this[0]: Destroying... [id=sg-0d4f2fb013c9a1a36]
+module.vpc.aws_default_security_group.this[0]: Destruction complete after 0s
+module.vpc.aws_route_table_association.private[1]: Destruction complete after 0s
+module.vpc.aws_route_table_association.public[0]: Destroying... [id=rtbassoc-0c15d31f638ce4c4c]
+module.vpc.aws_route.public_internet_gateway[0]: Destroying... [id=r-rtb-0bfa9e1df73da1c311080289494]
+module.vpc.aws_route.private_nat_gateway[0]: Destruction complete after 1s
+module.vpc.aws_route_table_association.public[1]: Destroying... [id=rtbassoc-0df0b857a6f6cecc4]
+module.vpc.aws_route_table_association.public[0]: Destruction complete after 0s
+module.eks.aws_eks_addon.before_compute["vpc-cni"]: Destroying... [id=medislot-dev-eks:vpc-cni]
+module.vpc.aws_route_table_association.public[1]: Destruction complete after 1s
+module.vpc.aws_default_route_table.default[0]: Destroying... [id=rtb-0dcb5230d22f165dc]
+module.vpc.aws_default_route_table.default[0]: Destruction complete after 0s
+module.vpc.aws_route.public_internet_gateway[0]: Destruction complete after 1s
+module.eks.aws_eks_addon.before_compute["eks-pod-identity-agent"]: Destroying... [id=medislot-dev-eks:eks-pod-identity-agent]
+module.eks.aws_eks_access_policy_association.this["cluster_creator_admin"]: Destroying... [id=medislot-dev-eks#arn:aws:iam::980921726643:user/ayush_cli#arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy]
+aws_iam_role_policy_attachment.ebs_csi: Destruction complete after 2s
+module.eks.aws_iam_role_policy_attachment.cluster_encryption[0]: Destruction complete after 2s
+module.eks.aws_iam_openid_connect_provider.oidc_provider[0]: Destruction complete after 2s
+module.vpc.aws_route_table.private[0]: Destroying... [id=rtb-04ab2dcb87c9733c8]
+module.vpc.aws_nat_gateway.this[0]: Destroying... [id=nat-0ac58f2390339aaf1]
+module.eks.aws_eks_addon.this["kube-proxy"]: Destruction complete after 2s
+module.vpc.aws_route_table.public[0]: Destroying... [id=rtb-0bfa9e1df73da1c31]
+module.eks.aws_iam_policy.cluster_encryption[0]: Destroying... [id=arn:aws:iam::980921726643:policy/medislot-dev-eks-cluster-ClusterEncryption9eb042d11c3d45f0c2e707b9b6]
+module.eks.aws_eks_access_policy_association.this["cluster_creator_admin"]: Destruction complete after 0s
+module.eks.aws_eks_access_entry.this["cluster_creator"]: Destroying... [id=medislot-dev-eks:arn:aws:iam::980921726643:user/ayush_cli]
+module.vpc.aws_route_table.private[0]: Destruction complete after 0s
+module.vpc.aws_route_table.public[0]: Destruction complete after 0s
+module.eks.aws_eks_access_entry.this["cluster_creator"]: Destruction complete after 1s
+module.eks.aws_iam_policy.cluster_encryption[0]: Destruction complete after 1s
+module.eks.aws_eks_addon.this["coredns"]: Destruction complete after 3s
+module.eks.aws_eks_addon.before_compute["eks-pod-identity-agent"]: Destruction complete after 1s
+module.eks.aws_eks_addon.before_compute["vpc-cni"]: Destruction complete after 3s
+module.eks.aws_eks_addon.this["metrics-server"]: Destruction complete after 4s
+module.eks.aws_eks_addon.this["aws-ebs-csi-driver"]: Destruction complete after 9s
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b]
+aws_iam_role.ebs_csi: Destroying... [id=medislot-dev-ebs-csi]
+module.eks.module.eks_managed_node_group["general"].module.user_data.null_resource.validate_cluster_service_cidr: Destroying... [id=8334532349510634610]
+module.eks.module.eks_managed_node_group["general"].module.user_data.null_resource.validate_cluster_service_cidr: Destruction complete after 0s
+aws_iam_role.ebs_csi: Destruction complete after 1s
+module.vpc.aws_nat_gateway.this[0]: Still destroying... [id=nat-0ac58f2390339aaf1, 00m10s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 00m10s elapsed]
+module.vpc.aws_nat_gateway.this[0]: Still destroying... [id=nat-0ac58f2390339aaf1, 00m20s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 00m20s elapsed]
+module.vpc.aws_nat_gateway.this[0]: Still destroying... [id=nat-0ac58f2390339aaf1, 00m30s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 00m30s elapsed]
+module.vpc.aws_nat_gateway.this[0]: Still destroying... [id=nat-0ac58f2390339aaf1, 00m40s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 00m40s elapsed]
+module.vpc.aws_nat_gateway.this[0]: Still destroying... [id=nat-0ac58f2390339aaf1, 00m50s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 00m50s elapsed]
+module.vpc.aws_nat_gateway.this[0]: Still destroying... [id=nat-0ac58f2390339aaf1, 01m00s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 01m00s elapsed]
+module.vpc.aws_nat_gateway.this[0]: Still destroying... [id=nat-0ac58f2390339aaf1, 01m10s elapsed]
+module.vpc.aws_nat_gateway.this[0]: Destruction complete after 1m11s
+module.vpc.aws_subnet.public[0]: Destroying... [id=subnet-0e023e0a50d469c3d]
+module.vpc.aws_subnet.public[1]: Destroying... [id=subnet-079e81876e320c6a0]
+module.vpc.aws_eip.nat[0]: Destroying... [id=eipalloc-07a3b9ac4ec02a2ab]
+module.vpc.aws_subnet.public[1]: Destruction complete after 1s
+module.vpc.aws_subnet.public[0]: Destruction complete after 1s
+module.vpc.aws_eip.nat[0]: Destruction complete after 1s
+module.vpc.aws_internet_gateway.this[0]: Destroying... [id=igw-08966ae76bda31ee1]
+module.vpc.aws_internet_gateway.this[0]: Destruction complete after 1s
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 01m10s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 01m20s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 01m30s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 01m40s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 01m50s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 02m00s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 02m10s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 02m20s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 02m30s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 02m40s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 02m50s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 03m00s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 03m10s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 03m20s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 03m30s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 03m40s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 03m50s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 04m00s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 04m10s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 04m20s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 04m30s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 04m40s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 04m50s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 05m00s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 05m10s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 05m20s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 05m30s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 05m40s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 05m50s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 06m00s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 06m10s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 06m20s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 06m30s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 06m40s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 06m50s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 07m00s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 07m10s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 07m20s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 07m30s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 07m40s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 07m50s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 08m00s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Still destroying... [id=medislot-dev-eks:medislot-dev-general-8757cd496d78235378bb7cc78b, 08m10s elapsed]
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Destruction complete after 8m15s
+module.eks.module.eks_managed_node_group["general"].aws_launch_template.this[0]: Destroying... [id=lt-021d512b392f8685d]
+module.eks.module.eks_managed_node_group["general"].aws_launch_template.this[0]: Destruction complete after 2s
+module.eks.module.eks_managed_node_group["general"].aws_iam_role_policy_attachment.this["AmazonEKS_CNI_Policy"]: Destroying... [id=medislot-dev-general-eks-node-group-36d14f6c8d568eb3d5ebb39669/arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy]
+module.eks.module.eks_managed_node_group["general"].aws_iam_role_policy_attachment.this["AmazonEKSWorkerNodePolicy"]: Destroying... [id=medislot-dev-general-eks-node-group-36d14f6c8d568eb3d5ebb39669/arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy]
+module.eks.module.eks_managed_node_group["general"].aws_iam_role_policy_attachment.this["AmazonEC2ContainerRegistryReadOnly"]: Destroying... [id=medislot-dev-general-eks-node-group-36d14f6c8d568eb3d5ebb39669/arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly]
+module.eks.time_sleep.this[0]: Destroying... [id=2026-10-13T08:27:22Z]
+module.eks.time_sleep.this[0]: Destruction complete after 0s
+module.eks.aws_eks_cluster.this[0]: Destroying... [id=medislot-dev-eks]
+module.eks.module.eks_managed_node_group["general"].aws_iam_role_policy_attachment.this["AmazonEKS_CNI_Policy"]: Destruction complete after 3s
+module.eks.module.eks_managed_node_group["general"].aws_iam_role_policy_attachment.this["AmazonEC2ContainerRegistryReadOnly"]: Destruction complete after 3s
+module.eks.module.eks_managed_node_group["general"].aws_iam_role_policy_attachment.this["AmazonEKSWorkerNodePolicy"]: Destruction complete after 3s
+module.eks.module.eks_managed_node_group["general"].aws_iam_role.this[0]: Destroying... [id=medislot-dev-general-eks-node-group-36d14f6c8d568eb3d5ebb39669]
+module.eks.module.eks_managed_node_group["general"].aws_iam_role.this[0]: Destruction complete after 2s
+module.eks.aws_eks_cluster.this[0]: Still destroying... [id=medislot-dev-eks, 00m10s elapsed]
+module.eks.aws_eks_cluster.this[0]: Still destroying... [id=medislot-dev-eks, 00m20s elapsed]
+module.eks.aws_eks_cluster.this[0]: Still destroying... [id=medislot-dev-eks, 00m30s elapsed]
+module.eks.aws_eks_cluster.this[0]: Still destroying... [id=medislot-dev-eks, 00m40s elapsed]
+module.eks.aws_eks_cluster.this[0]: Still destroying... [id=medislot-dev-eks, 00m50s elapsed]
+module.eks.aws_eks_cluster.this[0]: Still destroying... [id=medislot-dev-eks, 01m00s elapsed]
+module.eks.aws_eks_cluster.this[0]: Still destroying... [id=medislot-dev-eks, 01m10s elapsed]
+module.eks.aws_eks_cluster.this[0]: Still destroying... [id=medislot-dev-eks, 01m20s elapsed]
+module.eks.aws_eks_cluster.this[0]: Still destroying... [id=medislot-dev-eks, 01m30s elapsed]
+module.eks.aws_eks_cluster.this[0]: Still destroying... [id=medislot-dev-eks, 01m40s elapsed]
+module.eks.aws_eks_cluster.this[0]: Still destroying... [id=medislot-dev-eks, 01m50s elapsed]
+module.eks.aws_eks_cluster.this[0]: Still destroying... [id=medislot-dev-eks, 02m00s elapsed]
+module.eks.aws_eks_cluster.this[0]: Still destroying... [id=medislot-dev-eks, 02m10s elapsed]
+module.eks.aws_eks_cluster.this[0]: Still destroying... [id=medislot-dev-eks, 02m20s elapsed]
+module.eks.aws_eks_cluster.this[0]: Still destroying... [id=medislot-dev-eks, 02m30s elapsed]
+module.eks.aws_eks_cluster.this[0]: Still destroying... [id=medislot-dev-eks, 02m40s elapsed]
+module.eks.aws_eks_cluster.this[0]: Still destroying... [id=medislot-dev-eks, 02m50s elapsed]
+module.eks.aws_eks_cluster.this[0]: Still destroying... [id=medislot-dev-eks, 03m00s elapsed]
+module.eks.aws_eks_cluster.this[0]: Still destroying... [id=medislot-dev-eks, 03m10s elapsed]
+module.eks.aws_eks_cluster.this[0]: Destruction complete after 3m17s
+module.eks.aws_security_group_rule.node["ingress_cluster_6443_webhook"]: Destroying... [id=sgrule-189918964]
+module.eks.aws_security_group_rule.node["ingress_nodes_ephemeral"]: Destroying... [id=sgrule-228932949]
+module.eks.aws_security_group_rule.cluster["ingress_nodes_443"]: Destroying... [id=sgrule-2530693658]
+module.eks.aws_security_group_rule.node["egress_all"]: Destroying... [id=sgrule-2288096696]
+module.eks.aws_security_group_rule.node["ingress_cluster_8443_webhook"]: Destroying... [id=sgrule-403559125]
+module.eks.aws_security_group_rule.node["ingress_cluster_9443_webhook"]: Destroying... [id=sgrule-2091704606]
+module.eks.aws_security_group_rule.node["ingress_self_coredns_udp"]: Destroying... [id=sgrule-579154383]
+module.eks.aws_cloudwatch_log_group.this[0]: Destroying... [id=/aws/eks/medislot-dev-eks/cluster]
+module.eks.module.kms.aws_kms_key.this[0]: Destroying... [id=d4d09353-3268-4392-919d-90fb3a17b576]
+module.vpc.aws_subnet.private[0]: Destroying... [id=subnet-04ad03fe64e57eaa0]
+module.eks.module.kms.aws_kms_key.this[0]: Destruction complete after 0s
+module.eks.aws_cloudwatch_log_group.this[0]: Destruction complete after 0s
+module.eks.aws_iam_role_policy_attachment.this["AmazonEKSClusterPolicy"]: Destroying... [id=medislot-dev-eks-cluster-6db5506ae4fcf2cf1b4466e358/arn:aws:iam::aws:policy/AmazonEKSClusterPolicy]
+module.eks.aws_security_group_rule.node["ingress_cluster_10251_webhook"]: Destroying... [id=sgrule-2820896649]
+module.eks.aws_security_group_rule.cluster["ingress_nodes_443"]: Destruction complete after 1s
+module.eks.aws_security_group_rule.node["egress_all"]: Destruction complete after 1s
+module.eks.aws_security_group_rule.node["ingress_cluster_443"]: Destroying... [id=sgrule-3217215123]
+module.eks.aws_security_group_rule.node["ingress_cluster_kubelet"]: Destroying... [id=sgrule-2624202738]
+module.vpc.aws_subnet.private[0]: Destruction complete after 1s
+module.eks.aws_security_group_rule.node["ingress_self_coredns_tcp"]: Destroying... [id=sgrule-2262471200]
+module.eks.aws_security_group_rule.node["ingress_nodes_ephemeral"]: Destruction complete after 1s
+module.vpc.aws_subnet.private[1]: Destroying... [id=subnet-0c920e0ba68314b56]
+module.eks.aws_iam_role_policy_attachment.this["AmazonEKSClusterPolicy"]: Destruction complete after 2s
+module.eks.aws_security_group_rule.node["ingress_cluster_4443_webhook"]: Destroying... [id=sgrule-3256060258]
+module.vpc.aws_subnet.private[1]: Destruction complete after 1s
+module.eks.aws_security_group_rule.node["ingress_cluster_8443_webhook"]: Destruction complete after 2s
+module.eks.aws_iam_role.this[0]: Destroying... [id=medislot-dev-eks-cluster-6db5506ae4fcf2cf1b4466e358]
+module.eks.aws_security_group_rule.node["ingress_cluster_9443_webhook"]: Destruction complete after 2s
+module.eks.aws_security_group_rule.node["ingress_self_coredns_udp"]: Destruction complete after 3s
+module.eks.aws_iam_role.this[0]: Destruction complete after 2s
+module.eks.aws_security_group_rule.node["ingress_cluster_6443_webhook"]: Destruction complete after 4s
+module.eks.aws_security_group_rule.node["ingress_cluster_10251_webhook"]: Destruction complete after 5s
+module.eks.aws_security_group_rule.node["ingress_cluster_443"]: Destruction complete after 5s
+module.eks.aws_security_group_rule.node["ingress_self_coredns_tcp"]: Destruction complete after 5s
+module.eks.aws_security_group_rule.node["ingress_cluster_kubelet"]: Destruction complete after 5s
+module.eks.aws_security_group_rule.node["ingress_cluster_4443_webhook"]: Destruction complete after 6s
+module.eks.aws_security_group.cluster[0]: Destroying... [id=sg-00e5ff68c573130e2]
+module.eks.aws_security_group.node[0]: Destroying... [id=sg-09efa3097517225d2]
+module.eks.aws_security_group.node[0]: Destruction complete after 17m11s
+module.eks.aws_security_group.cluster[0]: Destruction complete after 17m11s
+module.vpc.aws_vpc.this[0]: Destroying... [id=vpc-07760798354aad45f]
+module.vpc.aws_vpc.this[0]: Destruction complete after 1s
+
+Destroy complete! Resources: 60 destroyed.

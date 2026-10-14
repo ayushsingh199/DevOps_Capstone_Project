@@ -442,6 +442,8 @@ NAT gateway ≈ $0.06/h + NLB ≈ $0.03/h, so **about $0.37 per hour**.
 
 ## Evidence (captured from the live EKS deployment)
 
+> The EKS environment was torn down after evaluation (`scripts/teardown.sh`, 60 resources destroyed) to avoid ongoing AWS cost. `terraform apply` + `scripts/bootstrap-cluster.sh eks` recreate everything.
+
 Raw command output is in [`docs/evidence/`](docs/evidence/); images are in [`docs/screenshots/`](docs/screenshots/).
 
 | What | Screenshot |
@@ -453,7 +455,7 @@ Raw command output is in [`docs/evidence/`](docs/evidence/); images are in [`doc
 | GitHub Actions run, all jobs green (M5) | ![actions](docs/screenshots/github-actions-run.png) |
 | GHCR package with commit-SHA tags only (M5) | [ghcr](docs/screenshots/ghcr-backend-package.png) |
 | Trivy gate output from the pipeline (M6) | [trivy](docs/screenshots/trivy-ci.png) |
-| `terraform plan` (60 to add) and `apply` (M7) | [plan](docs/screenshots/terraform-plan-summary.png) · [apply](docs/screenshots/terraform-apply-summary.png) |
+| `terraform plan` (60 to add), `apply`, and `destroy` (60 destroyed, nothing left in the account) (M7) | [plan](docs/screenshots/terraform-plan-summary.png) · [apply](docs/screenshots/terraform-apply-summary.png) · [destroy](docs/screenshots/terraform-destroy-summary.png) |
 | AWS Console (ap-south-1): `medislot-dev-vpc` with 4 subnets, EKS `medislot-dev-eks` Active on 1.36 (M7) | [VPC list](docs/screenshots/aws-vpc-list.png) · ![vpc](docs/screenshots/aws-vpc-details.png) · ![eks](docs/screenshots/aws-eks-cluster.png) |
 | `kubectl get pods/svc/ingress/hpa`, `helm list`, Argo CD app (M8) | ![k8s](docs/screenshots/k8s-status.png) |
 | `curl` of the backend `/metrics` (M9) | [metrics](docs/screenshots/metrics.png) |

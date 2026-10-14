@@ -1,0 +1,24 @@
+$ ./scripts/teardown.sh
+==> Removing Argo CD application (so it cannot re-create resources)
+==> Deleting app namespace (PVC -> EBS volume is deleted with it)
+==> Uninstalling Traefik (deletes the AWS Network Load Balancer)
+==> Waiting for LoadBalancer services to disappear
+==> terraform destroy
+...
+module.vpc.aws_nat_gateway.this[0]: Destruction complete after 1m11s
+module.vpc.aws_subnet.public[1]: Destruction complete after 1s
+module.vpc.aws_subnet.public[0]: Destruction complete after 1s
+module.eks.module.eks_managed_node_group["general"].aws_eks_node_group.this[0]: Destruction complete after 8m15s
+module.eks.aws_eks_cluster.this[0]: Destruction complete after 3m17s
+module.vpc.aws_subnet.private[0]: Destruction complete after 1s
+module.vpc.aws_subnet.private[1]: Destruction complete after 1s
+module.vpc.aws_vpc.this[0]: Destruction complete after 1s
+
+Destroy complete! Resources: 60 destroyed.
+
+$ aws eks list-clusters --region ap-south-1
+{
+    "clusters": []
+}
+$ aws ec2 describe-vpcs --region ap-south-1 --filters Name=tag:Project,Values=medislot --query Vpcs
+[]
