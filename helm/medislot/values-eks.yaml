@@ -4,11 +4,11 @@ environment: eks-dev
 backend:
   image:
     repository: ghcr.io/ayushsingh199/medislot-backend
-    tag: "15eb7fbe918dd497cb171cee8a73f89f8f1a4054"
+    tag: "157647758db259c13f59503cf35e22e4024b8989"
 frontend:
   image:
     repository: ghcr.io/ayushsingh199/medislot-frontend
-    tag: "15eb7fbe918dd497cb171cee8a73f89f8f1a4054"
+    tag: "157647758db259c13f59503cf35e22e4024b8989"
 postgresql:
   auth:
     existingSecret: medislot-db # created by scripts/bootstrap-cluster.sh, never committed
